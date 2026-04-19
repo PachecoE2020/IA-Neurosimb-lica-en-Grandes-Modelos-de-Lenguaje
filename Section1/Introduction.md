@@ -22,7 +22,11 @@ La barrera fundamental para orquestar la integración NeSy reside en la incompat
 
 
 ## Taxonomía Fundamental de la IA Neurosimbólica (Modelo de Kautz)
-Para estructurar algorítmicamente las arquitecturas de integración entre el aprendizaje estadístico y el razonamiento deductivo, la literatura académica adopta la taxonomía estándar formulada por Kautz [7]. Este modelo clasifica los sistemas Neurosimbólicos (NeSy) en seis topologías basadas en la direccionalidad del flujo de datos, el acoplamiento estructural y el mecanismo de inferencia. A continuación, se presenta esta taxonomía adaptada rigurosamente al ecosistema de los Grandes Modelos de Lenguaje (LLMs):
+Para estructurar algorítmicamente las arquitecturas de integración entre el aprendizaje estadístico y el razonamiento deductivo, la literatura académica adopta la taxonomía estándar formulada por Kautz [7]. 
+
+> **Vídeo de referencia:** Recomendamos ver la conferencia magistral original donde se popularizó este modelo: [The Third AI Summer (AAAI 2020 Robert S. Engelmore Memorial Award Lecture)](https://www.youtube.com/watch?v=_cQITY0SPiw). En ella, el Dr. Kautz realiza una disertación exhaustiva sobre la evolución histórica y la formulación de estas seis arquitecturas.
+
+Este modelo clasifica los sistemas Neurosimbólicos (NeSy) en seis topologías basadas en la direccionalidad del flujo de datos, el acoplamiento estructural y el mecanismo de inferencia. A continuación, se presenta esta taxonomía adaptada rigurosamente al ecosistema de los Grandes Modelos de Lenguaje (LLMs):
 
 ### Tipo 1 (Symbolic Neuro Symbolic): Arquitectura de Entrada/Salida Discreta
 
@@ -62,6 +66,14 @@ Representa el nivel máximo de integración teórica. Un motor de pensamiento si
 
 En el estado del arte de la inteligencia artificial, el Tipo 6 sigue siendo un horizonte teórico. Ningún LLM actual logra emular el razonamiento combinatorio algorítmico de manera intrínseca y escalable, manteniendo a esta categoría como el principal reto abierto de la investigación en arquitecturas NeSy.
 
+<p align="center">
+  <img src="taxonomy.png" alt="Taxonomía de Kautz de la IA Neurosimbólica" width="600">
+</p>
+
+<p align="center">
+  <em>Figura: Taxonomía de Kautz aplicada a arquitecturas de IA neurosimbólica.</em>
+</p>
+
 ## Grandes Modelos de Lenguaje (LLMs) y su Mapeo Taxonómico
 
 En su arquitectura nativa, los Grandes Modelos de Lenguaje operan bajo el Tipo 1 (Symbolic Neuro Symbolic) de la taxonomía de Kautz. Estos modelos ingieren secuencias de símbolos discretos (texto en lenguaje natural), los proyectan en un espacio de embeddings vectoriales para su procesamiento sub-simbólico, y decodifican la salida nuevamente hacia el espacio discreto. En este nivel de integración superficial, la coherencia deductiva es un mero subproducto estadístico del modelado de lenguaje autorregresivo. Al carecer de un motor de inferencia formal interno, los LLMs exhiben fallas sistemáticas en la verificación de hechos y son estructuralmente propensos a contradecir sus propias premisas durante el razonamiento lógico complejo.
@@ -90,7 +102,9 @@ Pipeline:
 
 Esta arquitectura presenta una vulnerabilidad extrema en la capa inicial de traducción. Si el LLM omite una precondición implícita del entorno, alucina un predicado fuera del vocabulario o corrompe la sintaxis durante la extracción de información, la ejecución del solver colapsa catastróficamente. Además, la dependencia del bucle de Self-Refinement, combinada con la complejidad temporal intrínseca (a menudo NP-Hard o PSPACE) de los solvers SMT y planificadores clásicos, genera picos de latencia inaceptables [17]. Esto inhabilita el uso de estos pipelines NeSy para sistemas autónomos que requieran inferencia y planificación reactiva en tiempo real.
 
-Estas vulnerabilidades en la interfaz de traducción demuestran que, si bien la integración NeSy ofrece un camino prometedor, es imperativo analizar en profundidad las fallas estructurales inherentes a los modelos conexionistas puros para comprender por qué el "rescate simbólico" es indispensable en tareas de alta criticidad, como se detallará en la siguiente sección.
+Estas vulnerabilidades en la interfaz de traducción demuestran que, si bien la integración NeSy ofrece un camino prometedor, es imperativo analizar en profundidad las fallas estructurales inherentes a los modelos conexionistas puros para comprender por qué el "rescate simbólico" es indispensable en tareas críticas, como se detallará en la siguiente sección.
+
+> **Vídeo ilustrativo:** Para una representación visual didáctica sobre la fusión del reconocimiento de patrones (paradigma conexionista) con la extrapolación lógica (paradigma simbólico), consulta el video introductorio de IBM Technology: [What Is NeuroSymbolic AI? Bridging Reasoning & Neural Networks](https://www.youtube.com/watch?v=ZfWDVO3rzeA).
 
 ---
 

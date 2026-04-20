@@ -94,7 +94,7 @@ Este es el paradigma dominante en arquitecturas del estado del arte, ejemplifica
 
 Pipeline:
 
-1. **Extracción de Información (IE) y Formulación**: El LLM recibe una instrucción en lenguaje natural no estructurado. Guiado por esquemas predefinidos (mediante prompting o in-context learning), el modelo actúa como un extractor de entidades y relaciones, mapeándolas de forma determinista hacia un lenguaje formal tipado, como Planning Domain Definition Language (PDDL) o sintaxis para solucionadores SMT [15].
+1. **Extracción de Información (IE) y Formulación**: El LLM recibe una instrucción en lenguaje natural no estructurado. Guiado por esquemas predefinidos (mediante prompting o in-context learning), el modelo actúa como un extractor de entidades y relaciones, mapeándolas de forma determinista hacia un lenguaje formal tipado, como Planning Domain Definition Language (PDDL) o sintaxis para solvers SMT [15].
 
 2. **Razonamiento Simbólico**: Esta formulación simbólica se transfiere a un motor de inferencia determinista (ej. Z3, planificadores como Fast Downward o motores Prolog). El solver computa la prueba lógica o la ruta de búsqueda óptima sin intervención neuronal [16].
 

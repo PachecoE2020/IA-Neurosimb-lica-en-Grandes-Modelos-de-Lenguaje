@@ -61,16 +61,18 @@ por ejemplo:
 
 Un LLM puede generar una respuesta plausible, pero **no garantiza** que el plan
 sea físicamente ejecutable, óptimo o consistente con las restricciones del
-entorno. Trabajos como Fang et al. [6] han documentado que los LLMs, incluso
-con *chain-of-thought*, fallan sistemáticamente en planificación clásica de
-horizonte largo. La causa estructural es que aproximan la distribución de
-planes plausibles textualmente, sin garantías de satisfacibilidad ni
-optimalidad sobre el espacio de estados.
+entorno. Trabajos sobre planificación con LLMs, incluyendo LLM+P [7], muestran
+que los LLMs por sí solos no resuelven de forma fiable problemas de
+planificación de horizonte largo: aproximan la distribución de planes
+plausibles textualmente, sin garantías de satisfacibilidad ni optimalidad sobre
+el espacio de estados.
 
-Los planificadores clásicos basados en heurísticas admisibles (p. ej., Fast
-Downward con LM-cut) sí ofrecen estas garantías, pero requieren que el problema
-esté formalizado en **PDDL** (*Planning Domain Definition Language*), un
-lenguaje que exige precisión sintáctica que el usuario final raramente posee.
+Los planificadores clásicos pueden generar planes formalmente válidos y, bajo
+configuraciones óptimas y suficiente tiempo de búsqueda (p. ej., Fast Downward
+con A\* + LM-cut), planes óptimos. La contrapartida es que requieren que el
+problema esté formalizado en **PDDL** (*Planning Domain Definition Language*),
+un lenguaje que exige precisión sintáctica que el usuario final raramente
+posee.
 PDDL permite representar:
 
 - Objetos del mundo.
@@ -112,7 +114,8 @@ veces (formalizar y verbalizar) y el solver una sola vez:
    LLM completa los bloques `(:objects ...)`, `(:init ...)` y `(:goal ...)`.
 3. **Planificación.** Se invoca un planificador clásico —Fast Downward es la
    elección estándar— sobre el par (dominio, problema). Devuelve un plan
-   óptimo o reporta `UNSAT`.
+   válido —posiblemente óptimo según la configuración— o reporta fallo por
+   PDDL inválido, problema irresoluble, *timeout* o fallo de validación.
 4. **Verbalización.** El LLM traduce la secuencia de acciones simbólicas a una
    explicación en lenguaje natural.
 
@@ -124,7 +127,8 @@ a LLM+P brillante en entornos cerrados y frágil en escenarios abiertos.
 
 ### 3.1.4. DUPLEX [3]: doble sistema con IE guiada por esquema
 
-DUPLEX generaliza LLM+P en dos direcciones que merecen análisis detallado:
+DUPLEX es una propuesta reciente (preprint, 2026) que generaliza la línea de
+LLM+P en dos direcciones que merecen análisis detallado:
 
 **(a) Marco *dual-process*.** DUPLEX se inspira explícitamente en la dicotomía
 Sistema 1 / Sistema 2 (Kahneman). El Sistema 1 es el LLM (rápido, asociativo,
@@ -138,9 +142,12 @@ LLM recibe un *prompt* que incluye un JSON Schema con campos tipados (objetos,
 sus tipos, predicados unarios y binarios verdaderos en el estado inicial,
 condiciones de meta). El LLM **rellena** la estructura; no la inventa. La
 traducción JSON → PDDL la realiza después un *mapper* **determinista** (no un
-LLM), eliminando una clase entera de alucinaciones sintácticas. Si el modelo
-de inferencia lo soporta (p. ej., *grammar-constrained decoding* tipo Outlines
-o GBNF), la salida es sintácticamente garantizada.
+LLM), eliminando una clase entera de alucinaciones sintácticas. Si la
+implementación lo combina además con decodificación restringida por gramática
+o JSON Schema (p. ej., Outlines o GBNF), la salida puede hacerse aún más
+robusta; sin embargo, el aporte central de DUPLEX es la extracción guiada por
+esquema y el mapeo determinista a PDDL, no un mecanismo concreto de
+*constrained decoding*.
 
 ```mermaid
 flowchart TB
@@ -267,12 +274,13 @@ flowchart LR
    representación simbólica.
 3. **Ejecución determinista.** El solver se ejecuta. Si la formalización es
    sintácticamente inválida, el parser devuelve un error; si es semánticamente
-   inconsistente, el solver retorna `UNSAT` con un núcleo no satisfacible
-   (*unsat core*).
-4. **Self-Refinement.** El error o el unsat core se reenvían al LLM con un
-   prompt del tipo: *"La formulación previa produjo el error X. Identifica la
-   premisa errónea y reescribe la formulación."* El bucle itera hasta un máximo
-   N (típicamente N=3).
+   inconsistente o produce una salida incompatible, el solver devuelve un
+   resultado o mensaje de error que sirve como señal de feedback.
+4. **Self-Refinement.** El error o la salida del solver se reenvían al LLM con
+   un prompt del tipo: *"La formulación previa produjo el error X. Identifica
+   la premisa errónea y reescribe la formulación."* El bucle se ejecuta
+   durante un número limitado de rondas o hasta que la formulación sea
+   ejecutable.
 5. **Interpretación.** Si hay éxito, el LLM verbaliza la conclusión y, si el
    solver lo soporta, la traza de prueba.
 
@@ -377,7 +385,7 @@ naturaleza del feedback** en el bucle de refinamiento:
 
 | Aspecto | Logic-LM | CEGIS |
 |---|---|---|
-| Tipo de error que reinyecta | Errores de sintaxis o *unsat cores* agregados. | **Modelo concreto** (asignación de variables) que falsifica el candidato. |
+| Tipo de error que reinyecta | Mensajes de error del parser o salidas del solver. | **Modelo concreto** (asignación de variables) que falsifica el candidato. |
 | Densidad de la señal | Baja: el LLM debe inferir qué premisa cambiar. | Alta: el contraejemplo ancla la próxima iteración. |
 | Convergencia típica | Variable; puede oscilar. | Convergencia rápida en pocas iteraciones. |
 | Requisito sobre el problema | El problema debe ser formalizable en uno de los formalismos soportados. | La especificación φ debe ser formalizable manualmente. |
@@ -483,11 +491,13 @@ verificadas por el motor simbólico. Esta separación —**generación neuronal,
 verificación simbólica**— es el patrón que mejor encarna los ideales del
 paradigma NeSy.
 
-AlphaGeometry2 mejora sobre [15] con: (i) un lenguaje de dominio extendido
-(ángulos orientados, geometría no-euclidiana parcial), (ii) un solver más
-rápido reescrito en C++ y (iii) un LM Gemini fine-tuneado en lugar del
-transformer desde cero, lo que aumenta sustancialmente el ratio de problemas
-IMO resueltos respecto al sistema original.
+AlphaGeometry2 mejora sobre [15] con: (i) un lenguaje de dominio extendido que
+cubre objetos en movimiento, ecuaciones lineales de ángulos, razones y
+distancias, teoremas de tipo *locus* y problemas no constructivos; (ii) un
+solver simbólico reescrito en C++ con mejoras significativas de velocidad; y
+(iii) un modelo Gemini *fine-tuneado* en lugar del transformer entrenado desde
+cero, lo que aumenta sustancialmente el ratio de problemas IMO resueltos
+respecto al sistema original.
 
 ### 3.3.3. NELLIE [11]: backward chaining neuro-simbólico
 
@@ -500,21 +510,22 @@ es opuesta a AlphaGeometry2: en lugar de cierre deductivo *forward*, NELLIE usa
 reglas R tales que el consecuente de R unifique con H, y entonces intenta
 probar los antecedentes de R. La búsqueda imita SLD-resolution. **La novedad:
 los átomos no son símbolos sintácticos, son frases en lenguaje natural**, y el
-LLM realiza tres funciones:
+componente neuronal de NELLIE —que combina modelado de lenguaje, generación
+guiada y recuperación densa— realiza tres funciones:
 
-1. **Recuperación de reglas.** Dado un objetivo H, el LLM (vía *dense
-   retrieval* o generación) propone reglas relevantes de un corpus de
+1. **Recuperación de reglas.** Dado un objetivo H, el componente neuronal (vía
+   *dense retrieval* o generación) propone reglas relevantes de un corpus de
    conocimiento.
 2. **Unificación semántica.** En lugar de unificación sintáctica (Prolog),
-   NELLIE evalúa si dos frases son *entailment-equivalentes* mediante un modelo
-   NLI (*Natural Language Inference*).
-3. **Generación de reglas.** Si ninguna regla del corpus aplica, el LLM
-   *genera* una regla candidata, que se verifica por consistencia con el resto
-   de la base.
+   NELLIE evalúa si dos frases son *entailment-equivalentes* mediante un
+   modelo NLI (*Natural Language Inference*).
+3. **Generación de reglas.** Si ninguna regla del corpus aplica, el componente
+   neuronal *genera* una regla candidata, que se verifica por consistencia con
+   el resto de la base.
 
 ```mermaid
 flowchart TB
-    A[Hipótesis H<br/>en lenguaje natural] --> B[LLM:<br/>recuperar/generar reglas]
+    A[Hipótesis H<br/>en lenguaje natural] --> B[Componente neuronal:<br/>recuperar/generar reglas]
     B --> C["Regla R: P1 ∧ P2 → H"]
     C --> D[Modelo NLI:<br/>verificar unificación<br/>semántica]
     D --> E[Sub-objetivos<br/>P1, P2]
@@ -551,15 +562,28 @@ Prolog clásico no tendría.
 ## 3.4. Síntesis comparativa
 
 Las seis arquitecturas analizadas pueden organizarse en una matriz que cruza
-**rol del LLM** (formalizador vs. heurístico) con **dirección de la búsqueda
-simbólica** (forward vs. backward):
+**rol del LLM** (formalizador vs. heurística) con el **régimen de control
+simbólico** (búsqueda determinista sobre representación formalizada vs.
+búsqueda guiada por heurística aprendida). La matriz es una clasificación
+**interpretativa**, no una taxonomía formal: no todos los sistemas implementan
+literalmente *forward* o *backward chaining*.
 
-| | **Forward** (cierre deductivo / planificación) | **Backward** (búsqueda dirigida por meta) |
+| | **Búsqueda determinista sobre representación formalizada** | **Búsqueda guiada por heurística aprendida** |
 |---|---|---|
-| **LLM como formalizador** | LLM+P, DUPLEX (NL → PDDL → plan) | Logic-LM, CEGIS (NL → FOL/SMT → prueba) |
-| **LLM como heurística** | AlphaGeometry2 (DDAR + construcciones auxiliares) | NELLIE (Prolog-style + retrieval) |
+| **LLM como formalizador** | LLM+P, DUPLEX (NL → PDDL → planificador A\*) <br> Logic-LM, CEGIS (NL → FOL/SMT → solver) | — |
+| **LLM como heurística** | — | AlphaGeometry2 (DDAR + construcciones auxiliares) <br> NELLIE (Prolog-style + retrieval semántico) |
 
-Vista lado a lado, la comparativa funcional queda:
+La matriz pone de manifiesto un patrón: cuando el LLM solo formaliza, el
+componente simbólico realiza una **búsqueda determinista clásica** (heurísticas
+admisibles en planificación, DPLL/CDCL en SAT/SMT) sobre una representación
+fija. Cuando el LLM actúa como heurística generativa, la búsqueda se vuelve
+**iterativa y dirigida por proposiciones del modelo neuronal**, evaluadas por
+el motor simbólico. Las dos celdas vacías de la matriz —*formalizador con
+búsqueda heurística aprendida* y *heurística con búsqueda determinista
+clásica*— corresponden a combinaciones poco exploradas en la literatura
+revisada.
+
+Vista lado a lado, la comparativa funcional de las tres familias queda:
 
 | Familia | Ejemplos | Rol del LLM | Rol simbólico | Fortaleza | Fragilidad principal |
 |---|---|---|---|---|---|
@@ -640,7 +664,6 @@ la fragilidad arquitectónica.
 [2] S. K. Jha *et al.*, "Counterexample Guided Inductive Synthesis Using Large Language Models and Satisfiability Solving," *MILCOM 2023*.
 [3] K. Hua, D. Wang, Y. Gu, X. Ma, "DUPLEX: Agentic Dual-System Planning via LLM-Driven Information Extraction," arXiv:2603.23909.
 [4] Y. Chervonyi *et al.*, "Gold-medalist Performance in Solving Olympiad Geometry with AlphaGeometry2," arXiv:2502.03544.
-[6] M. Fang *et al.*, "Large Language Models Are Neurosymbolic Reasoners," AAAI 2024.
 [7] B. Liu *et al.*, "LLM+P: Empowering Large Language Models with Optimal Planning Proficiency," arXiv:2304.11477.
 [8] L. Pan, A. Albalak, X. Wang, W. Wang, "Logic-LM: Empowering Large Language Models with Symbolic Solvers for Faithful Logical Reasoning," EMNLP Findings 2023.
 [11] N. Weir, P. Clark, B. Van Durme, "NELLIE: A Neuro-Symbolic Inference Engine for Grounded, Compositional, and Explainable Reasoning," arXiv:2209.07662.

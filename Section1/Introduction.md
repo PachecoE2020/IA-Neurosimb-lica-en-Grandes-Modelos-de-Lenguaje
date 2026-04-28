@@ -71,7 +71,7 @@ En el estado del arte de la inteligencia artificial, el Tipo 6 sigue siendo un h
 </p>
 
 <p align="center">
-  <em>Figura: Taxonomía de Kautz aplicada a arquitecturas de IA neurosimbólica.</em>
+  <em>Figura: Taxonomía de Kautz aplicada a arquitecturas de IA neurosimbólica. Fuente: Imagen Generada con Nano Banana 2.</em>
 </p>
 
 ## Grandes Modelos de Lenguaje (LLMs) y su Mapeo Taxonómico

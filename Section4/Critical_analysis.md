@@ -50,90 +50,75 @@ puede producir ningún resultado útil, con independencia de la calidad de los
 pasos posteriores.
 
 El diagrama siguiente ilustra ambos caminos posibles a partir de la etapa de
-traducción del LL
+traducción del LLM.
 
-<svg width="100%" viewBox="0 0 680 340" role="img">
-  <title>Caminos de éxito y fallo en la traducción neurosimbólica</title>
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5"
-      markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke"
-        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    </marker>
-  </defs>
+<svg width="100%" viewBox="0 0 689.45 340" role="img" xmlns="http://www.w3.org/2000/svg">
+	<title>Caminos de éxito y fallo en la traducción neurosimbólica</title>
+	<desc>Diagrama bifurcado que muestra el camino de éxito (traducción válida lleva a plan correcto) y el camino de fallo (predicado inventado lleva a error irreparable o bucle infinito).</desc>
+	<defs>
+		<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+			<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+		</marker>
+	</defs>
 
-  <!-- INPUT -->
-  <rect x="240" y="20" width="200" height="48" rx="8"
-    fill="#D3D1C7" stroke="#5F5E5A" stroke-width="0.5"/>
-  <text font-size="14" font-weight="500" x="340" y="40"
-    text-anchor="middle" dominant-baseline="central">Lenguaje natural</text>
-  <text font-size="12" x="340" y="58"
-    text-anchor="middle" dominant-baseline="central">Entrada del usuario</text>
+	<!-- INPUT -->
+	<g>
+		<rect x="240" y="20" width="200" height="48" rx="8" stroke-width="0.5" style="fill:rgb(68, 68, 65);stroke:rgb(180, 178, 169);"/>
+		<text x="340" y="40" text-anchor="middle" dominant-baseline="central" style="fill:rgb(211, 209, 199);font-size:14px;font-weight:500;">Lenguaje natural</text>
+		<text x="340" y="58" text-anchor="middle" dominant-baseline="central" style="fill:rgb(180, 178, 169);font-size:12px;">Entrada del usuario</text>
+	</g>
 
-  <line x1="340" y1="68" x2="340" y2="100"
-    stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+	<!-- Arrow down to LLM -->
+	<line x1="340" y1="68" x2="340" y2="100" marker-end="url(#arrow)" style="stroke:rgb(156, 154, 146);stroke-width:1.5px;"/>
 
-  <!-- LLM -->
-  <rect x="220" y="100" width="240" height="48" rx="8"
-    fill="#FAC775" stroke="#BA7517" stroke-width="1"/>
-  <text font-size="14" font-weight="500" x="340" y="120"
-    text-anchor="middle" dominant-baseline="central">LLM — Traducción</text>
-  <text font-size="12" x="340" y="138"
-    text-anchor="middle" dominant-baseline="central">Genera FOL / PDDL / SMT</text>
+	<!-- LLM TRANSLATION -->
+	<g>
+		<rect x="220" y="100" width="240" height="48" rx="8" stroke-width="1" style="fill:rgb(99, 56, 6);stroke:rgb(239, 159, 39);"/>
+		<text x="340" y="120" text-anchor="middle" dominant-baseline="central" style="fill:rgb(250, 199, 117);font-size:14px;font-weight:500;">LLM — Traducción</text>
+		<text x="340" y="138" text-anchor="middle" dominant-baseline="central" style="fill:rgb(239, 159, 39);font-size:12px;">Genera FOL / PDDL / SMT</text>
+	</g>
 
-  <!-- Fork izquierda (éxito) -->
-  <path d="M280 148 L160 180" fill="none"
-    stroke="#5F5E5A" stroke-width="1" marker-end="url(#arrow)"/>
-  <text font-size="12" x="196" y="162" text-anchor="middle">✓ Válida</text>
+	<!-- Fork arrow left (success) -->
+	<path d="M280 148 L160 180" fill="none" stroke="rgba(222, 220, 209, 0.4)" stroke-width="1" marker-end="url(#arrow)"/>
+	<text x="188" y="168" text-anchor="middle" style="fill:rgb(194, 192, 182);font-size:12px;">✓ Válida</text>
 
-  <!-- Fork derecha (fallo) -->
-  <path d="M400 148 L520 180" fill="none"
-    stroke="#5F5E5A" stroke-width="1" marker-end="url(#arrow)"/>
-  <text font-size="12" x="484" y="162" text-anchor="middle">✗ Inválida</text>
+	<!-- Fork arrow right (failure) -->
+	<path d="M400 148 L520 180" fill="none" stroke="rgba(222, 220, 209, 0.4)" stroke-width="1" marker-end="url(#arrow)"/>
+	<text x="492" y="168" text-anchor="middle" style="fill:rgb(194, 192, 182);font-size:12px;">✗ Inválida</text>
 
-  <!-- ÉXITO -->
-  <rect x="60" y="180" width="200" height="48" rx="8"
-    fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
-  <text font-size="14" font-weight="500" x="160" y="200"
-    text-anchor="middle" dominant-baseline="central">Solver simbólico</text>
-  <text font-size="12" x="160" y="218"
-    text-anchor="middle" dominant-baseline="central">Z3 / Fast Downward</text>
+	<!-- SUCCESS PATH -->
+	<g>
+		<rect x="60" y="180" width="200" height="48" rx="8" stroke-width="0.5" style="fill:rgb(8, 80, 65);stroke:rgb(93, 202, 165);"/>
+		<text x="160" y="200" text-anchor="middle" dominant-baseline="central" style="fill:rgb(159, 225, 203);font-size:14px;font-weight:500;">Solver simbólico</text>
+		<text x="160" y="218" text-anchor="middle" dominant-baseline="central" style="fill:rgb(93, 202, 165);font-size:12px;">Z3 / Fast Downward</text>
+	</g>
+	<line x1="160" y1="228" x2="160" y2="268" marker-end="url(#arrow)" style="stroke:rgb(156, 154, 146);stroke-width:1.5px;"/>
+	<g>
+		<rect x="60" y="268" width="200" height="44" rx="8" stroke-width="0.5" style="fill:rgb(8, 80, 65);stroke:rgb(93, 202, 165);"/>
+		<text x="160" y="286" text-anchor="middle" dominant-baseline="central" style="fill:rgb(159, 225, 203);font-size:14px;font-weight:500;">Plan / prueba válida</text>
+		<text x="160" y="302" text-anchor="middle" dominant-baseline="central" style="fill:rgb(93, 202, 165);font-size:12px;">Respuesta correcta</text>
+	</g>
 
-  <line x1="160" y1="228" x2="160" y2="268"
-    stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+	<!-- FAILURE PATH -->
+	<g>
+		<rect x="420" y="180" width="200" height="48" rx="8" stroke-width="0.5" style="fill:rgb(113, 43, 19);stroke:rgb(240, 153, 123);"/>
+		<text x="520" y="200" text-anchor="middle" dominant-baseline="central" style="fill:rgb(245, 196, 179);font-size:14px;font-weight:500;">Solver rechaza input</text>
+		<text x="520" y="218" text-anchor="middle" dominant-baseline="central" style="fill:rgb(240, 153, 123);font-size:12px;">Predicado inventado / sintaxis</text>
+	</g>
 
-  <rect x="60" y="268" width="200" height="44" rx="8"
-    fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5"/>
-  <text font-size="14" font-weight="500" x="160" y="286"
-    text-anchor="middle" dominant-baseline="central">Plan / prueba válida</text>
-  <text font-size="12" x="160" y="302"
-    text-anchor="middle" dominant-baseline="central">Respuesta correcta</text>
+	<!-- Failure: loop back or dead end -->
+	<path d="M520 228 L520 290 L460 290" fill="none" stroke="rgba(222, 220, 209, 0.3)" stroke-width="1" stroke-dasharray="5 4" marker-end="url(#arrow)"/>
+	<g>
+		<rect x="420" y="268" width="200" height="44" rx="8" stroke-width="0.5" style="fill:rgb(113, 43, 19);stroke:rgb(240, 153, 123);"/>
+		<text x="520" y="286" text-anchor="middle" dominant-baseline="central" style="fill:rgb(245, 196, 179);font-size:14px;font-weight:500;">Error / bucle sin fin</text>
+		<text x="520" y="302" text-anchor="middle" dominant-baseline="central" style="fill:rgb(240, 153, 123);font-size:12px;">Self-Refinement no converge</text>
+	</g>
 
-  <!-- FALLO -->
-  <rect x="420" y="180" width="200" height="48" rx="8"
-    fill="#F5C4B3" stroke="#993C1D" stroke-width="0.5"/>
-  <text font-size="14" font-weight="500" x="520" y="200"
-    text-anchor="middle" dominant-baseline="central">Solver rechaza input</text>
-  <text font-size="12" x="520" y="218"
-    text-anchor="middle" dominant-baseline="central">Predicado inventado / sintaxis</text>
-
-  <path d="M520 228 L520 290 L460 290" fill="none"
-    stroke="#993C1D" stroke-width="1" stroke-dasharray="5 4"
-    marker-end="url(#arrow)"/>
-
-  <rect x="420" y="268" width="200" height="44" rx="8"
-    fill="#F5C4B3" stroke="#993C1D" stroke-width="0.5"/>
-  <text font-size="14" font-weight="500" x="520" y="286"
-    text-anchor="middle" dominant-baseline="central">Error / bucle sin fin</text>
-  <text font-size="12" x="520" y="302"
-    text-anchor="middle" dominant-baseline="central">Self-Refinement no converge</text>
-
-  <!-- Loop de vuelta al LLM -->
-  <path d="M620 204 L648 204 L648 124 L462 124" fill="none"
-    stroke="#993C1D" stroke-width="1" stroke-dasharray="4 4"
-    marker-end="url(#arrow)"/>
-  <text font-size="11" x="649" y="168" text-anchor="start">loop</text>
+	<!-- Dashed loop arrow back to LLM -->
+	<path d="M620 204 L650 204 L650 124 L462 124" fill="none" stroke="rgba(222, 220, 209, 0.3)" stroke-width="1" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+	<text x="655" y="168" text-anchor="start" style="fill:rgb(194, 192, 182);font-size:12px;">loop</text>
 </svg>
+
 
 El mecanismo de *Self-Refinement* —presente en Logic-LM [8] y CEGIS [2]—
 mitiga parcialmente este problema reinyectando los mensajes de error del solver

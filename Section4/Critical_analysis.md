@@ -1,11 +1,7 @@
 
 # Análisis crítico
 
-Este apartado resume y discute críticamente los principales cuellos de botella, fragilidades y retos éticos asociados a la integración neurosimbólica (NeSy) con Grandes Modelos de Lenguaje (LLMs), a partir de la propuesta y bibliografía proporcionada.
-
-- El validador actúa como filtro crítico: sólo representaciones bien formadas alcanzan el solver.
-- El bucle de corrección (self-refinement) incorpora feedback del solver para mejorar la traducción.
-- Las trazas permiten auditoría y post-mortem en dominios de alto riesgo.
+Este apartado resume y discute críticamente los principales cuellos de botella, fragilidades y retos éticos asociados a la integración neurosimbólica (NeSy) con Grandes Modelos de Lenguaje (LLMs).
 
 ## 4.1 Latencia y costes computacionales
 

@@ -3,22 +3,6 @@
 
 Este apartado resume y discute críticamente los principales cuellos de botella, fragilidades y retos éticos asociados a la integración neurosimbólica (NeSy) con Grandes Modelos de Lenguaje (LLMs), a partir de la propuesta y bibliografía proporcionada.
 
-## Pipeline NeSy–LLM
-
-```mermaid
-flowchart TD
-	NL[Entrada: Lenguaje natural] --> LLM[LLM: Extracción estructurada]
-	LLM --> Validator[Validador sintáctico/semántico]
-	Validator -->|válido| Solver[Solver simbólico (PDDL/SAT/SMT)]
-	Validator -->|inválido| LLM_Correc[LLM: corrección / reformulación]
-	Solver --> Result[Resultado simbólico validado]
-	Result --> LLM_Post[LLM: generación de explicaciones/ráfaga]
-	Solver -->|error| LLM_Correc
-	LLM_Correc --> Validator
-	LLM_Post --> Output[Salida: respuesta verificada]
-	Output -->|registro| Logs[Almacén de trazas y métricas]
-```
-
 - El validador actúa como filtro crítico: sólo representaciones bien formadas alcanzan el solver.
 - El bucle de corrección (self-refinement) incorpora feedback del solver para mejorar la traducción.
 - Las trazas permiten auditoría y post-mortem en dominios de alto riesgo.

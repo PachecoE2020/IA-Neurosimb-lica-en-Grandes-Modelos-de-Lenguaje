@@ -10,6 +10,10 @@
     problema PDDL. Fast Downward genera el plan. El LLM no planifica: formaliza
     y verbaliza.
 
+!!! note "Dónde encaja en la ruta"
+    Lee esta ficha después de [Pipelines NeSy-LLM](../guia/pipelines.md). LLM+P
+    es el ejemplo más limpio de Tipo 4: `Neuro -> Symbolic`.
+
 ## Problema que resuelve
 
 Los usuarios describen objetivos en lenguaje natural; los planificadores
@@ -32,6 +36,11 @@ flowchart LR
 2. El LLM completa objetos, estado inicial y meta.
 3. Fast Downward busca un plan.
 4. El LLM traduce el plan a lenguaje natural.
+
+## Cómo explicarlo en una frase
+
+LLM+P no enseña a un LLM a planificar: usa el LLM como traductor hacia PDDL y
+deja la planificación a una herramienta que ya sabe buscar planes válidos.
 
 ## Fortalezas
 

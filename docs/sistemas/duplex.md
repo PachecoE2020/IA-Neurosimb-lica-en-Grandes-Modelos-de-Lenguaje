@@ -10,6 +10,11 @@
     rellena un esquema; un mapeador determinista produce PDDL; el planificador
     resuelve.
 
+!!! note "Dónde encaja en la ruta"
+    Lee esta ficha después de [Pipelines NeSy-LLM](../guia/pipelines.md).
+    DUPLEX es útil para entender por qué la interfaz es tan importante como el
+    solver.
+
 ## Arquitectura
 
 ```mermaid
@@ -30,6 +35,12 @@ flowchart TB
 El sistema no pide al LLM que escriba PDDL libre. Lo restringe a campos
 tipados. Esto elimina muchas alucinaciones sintácticas, aunque no todos los
 errores semánticos.
+
+## Cómo explicarlo en una frase
+
+DUPLEX convierte la generación libre de código formal en una tarea de extracción
+de información guiada por esquema, y con eso reduce el espacio de errores del
+LLM.
 
 ## Fortalezas
 

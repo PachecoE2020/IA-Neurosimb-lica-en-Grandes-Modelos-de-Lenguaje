@@ -11,6 +11,11 @@
     y un modelo neuronal que propone construcciones auxiliares. El LLM no valida
     pruebas: DDAR las verifica.
 
+!!! note "Dónde encaja en la ruta"
+    Lee esta ficha después de [Taxonomía de Kautz](../guia/taxonomia.md).
+    AlphaGeometry2 es el caso que más conviene explicar bien, porque suele
+    confundirse con un pipeline Tipo 4.
+
 ## Problema que resuelve
 
 Muchas pruebas geométricas requieren introducir puntos, líneas o círculos que no
@@ -33,6 +38,11 @@ flowchart TB
 !!! note "La clasificación correcta"
     AlphaGeometry2 no es Tipo 4. Es Tipo 2 porque el solver simbólico conserva
     el control y consulta al modelo neuronal como heurística.
+
+## Cómo explicarlo en una frase
+
+AlphaGeometry2 no usa el modelo neuronal como juez de verdad, sino como
+generador de buenas pistas para que DDAR pueda encontrar una prueba formal.
 
 ## Resultados
 

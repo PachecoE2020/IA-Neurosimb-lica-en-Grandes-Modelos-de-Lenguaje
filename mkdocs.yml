@@ -5,27 +5,39 @@ site_author: Iabin Arteaga
 theme:
   name: material
   language: es
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+  font:
+    text: Inter
+    code: JetBrains Mono
   features:
     - navigation.tabs
     - navigation.sections
+    - navigation.indexes
+    - navigation.expand
     - navigation.top
+    - navigation.footer
     - search.suggest
     - search.highlight
+    - search.share
     - content.code.copy
+    - content.tabs.link
     - toc.follow
   palette:
     - scheme: default
-      primary: indigo
-      accent: deep purple
+      primary: teal
+      accent: amber
       toggle:
         icon: material/brightness-7
         name: Cambiar a modo oscuro
     - scheme: slate
-      primary: indigo
-      accent: deep purple
+      primary: teal
+      accent: amber
       toggle:
         icon: material/brightness-4
         name: Cambiar a modo claro
+  icon:
+    repo: fontawesome/brands/github
 
 plugins:
   - search:
@@ -44,27 +56,24 @@ markdown_extensions:
   - tables
   - attr_list
   - md_in_html
+  - def_list
   - toc:
       permalink: true
 
+extra_css:
+  - stylesheets/extra.css
+
 nav:
   - Inicio: index.md
-  - Visión general:
-      - ¿Qué es NeSy?: overview/que-es-nesy.md
-      - Symbol grounding: overview/symbol-grounding.md
-      - Sistema 1 / Sistema 2: overview/sistema1-sistema2.md
-      - Por qué importa en LLMs: overview/por-que-importa-en-llms.md
-  - Taxonomía:
-      - Kautz overview: taxonomia/kautz-overview.md
-      - Tipo 1: taxonomia/tipo-1.md
-      - Tipo 2: taxonomia/tipo-2.md
-      - Tipo 3: taxonomia/tipo-3.md
-      - Tipo 4: taxonomia/tipo-4.md
-      - Tipo 5: taxonomia/tipo-5.md
-      - Tipo 6: taxonomia/tipo-6.md
-  - Fallas y ventajas:
-      - Fallas de LLMs: fallas-llm/overview.md
-      - Ventajas simbólicas: ventajas-simbolicas/overview.md
+  - Ruta guiada:
+      - Mapa de lectura: guia/index.md
+      - 1. Conceptos base: guia/conceptos.md
+      - 2. Taxonomía de Kautz: guia/taxonomia.md
+      - 3. Pipelines NeSy-LLM: guia/pipelines.md
+      - 4. Sistemas concretos: guia/casos.md
+      - 5. Evidencia empírica: guia/evidencia.md
+      - 6. Fragilidad y límites: guia/fragilidad.md
+      - 7. Ética y accountability: guia/etica.md
   - Sistemas:
       - LLM+P: sistemas/llm-p.md
       - DUPLEX: sistemas/duplex.md
@@ -72,29 +81,46 @@ nav:
       - CEGIS: sistemas/cegis.md
       - AlphaGeometry2: sistemas/alphageometry2.md
       - NELLIE: sistemas/nellie.md
-  - Técnicas:
-      - PDDL: tecnicas/pddl.md
-      - SMT / Z3: tecnicas/smt-solvers.md
-      - Self-refinement: tecnicas/self-refinement.md
-      - Schema-guided IE: tecnicas/schema-guided-ie.md
-      - Construcciones auxiliares: tecnicas/auxiliary-constructions.md
-  - Benchmarks:
-      - Overview: benchmarks/overview.md
-      - PlanBench: benchmarks/planbench.md
-      - IMO Geometry: benchmarks/imo-geometry.md
-  - Análisis crítico:
-      - Latencia: analisis-critico/latencia.md
-      - Fragilidad de traducción: analisis-critico/fragilidad-traduccion.md
-      - Soundness vs generalidad: analisis-critico/trade-soundness-generalidad.md
-  - Ética:
-      - Doble sesgo: etica/doble-sesgo.md
-      - Explainability laundering: etica/explainability-laundering.md
-      - Accountability: etica/accountability.md
-  - Comparativas:
-      - LLM vs NeSy: comparativas/llm-vs-nesy.md
-      - Logic-LM vs CEGIS: comparativas/logic-lm-vs-cegis.md
-      - AlphaGeometry2 vs NELLIE: comparativas/alphageometry2-vs-nellie.md
-      - Matriz funcional: comparativas/matriz-funcional.md
+  - Referencia:
+      - Visión general:
+          - ¿Qué es NeSy?: overview/que-es-nesy.md
+          - Symbol grounding: overview/symbol-grounding.md
+          - Sistema 1 / Sistema 2: overview/sistema1-sistema2.md
+          - Por qué importa en LLMs: overview/por-que-importa-en-llms.md
+      - Taxonomía:
+          - Kautz overview: taxonomia/kautz-overview.md
+          - Tipo 1: taxonomia/tipo-1.md
+          - Tipo 2: taxonomia/tipo-2.md
+          - Tipo 3: taxonomia/tipo-3.md
+          - Tipo 4: taxonomia/tipo-4.md
+          - Tipo 5: taxonomia/tipo-5.md
+          - Tipo 6: taxonomia/tipo-6.md
+      - Fallas y ventajas:
+          - Fallas de LLMs: fallas-llm/overview.md
+          - Ventajas simbólicas: ventajas-simbolicas/overview.md
+      - Técnicas:
+          - PDDL: tecnicas/pddl.md
+          - SMT / Z3: tecnicas/smt-solvers.md
+          - Self-refinement: tecnicas/self-refinement.md
+          - Schema-guided IE: tecnicas/schema-guided-ie.md
+          - Construcciones auxiliares: tecnicas/auxiliary-constructions.md
+      - Benchmarks:
+          - Overview: benchmarks/overview.md
+          - PlanBench: benchmarks/planbench.md
+          - IMO Geometry: benchmarks/imo-geometry.md
+      - Análisis crítico:
+          - Latencia: analisis-critico/latencia.md
+          - Fragilidad de traducción: analisis-critico/fragilidad-traduccion.md
+          - Soundness vs generalidad: analisis-critico/trade-soundness-generalidad.md
+      - Ética:
+          - Doble sesgo: etica/doble-sesgo.md
+          - Explainability laundering: etica/explainability-laundering.md
+          - Accountability: etica/accountability.md
+      - Comparativas:
+          - LLM vs NeSy: comparativas/llm-vs-nesy.md
+          - Logic-LM vs CEGIS: comparativas/logic-lm-vs-cegis.md
+          - AlphaGeometry2 vs NELLIE: comparativas/alphageometry2-vs-nellie.md
+          - Matriz funcional: comparativas/matriz-funcional.md
   - Glosario: glosario.md
   - Bibliografía: bibliografia.md
   - Sobre: sobre.md

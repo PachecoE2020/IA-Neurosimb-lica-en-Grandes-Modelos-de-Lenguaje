@@ -1,48 +1,120 @@
-# IA Neurosimbólica + LLMs
+<section class="nesy-hero">
+  <p class="nesy-kicker">Wiki didáctica · IA Neurosimbólica · LLMs</p>
+  <h1>IA Neurosimbólica + LLMs</h1>
+  <p>
+    Una guía para entender cómo los modelos de lenguaje pueden trabajar con
+    solvers, planificadores y motores deductivos sin confundir texto plausible
+    con razonamiento formal.
+  </p>
+  <div class="nesy-actions">
+    <a class="nesy-button primary" href="guia/">Seguir la ruta guiada</a>
+    <a class="nesy-button" href="guia/conceptos/">Leer conceptos base</a>
+    <a class="nesy-button" href="guia/casos/">Ver sistemas concretos</a>
+  </div>
+</section>
 
-Una wiki sobre cómo combinar Grandes Modelos de Lenguaje con sistemas de
-razonamiento formal: taxonomía, sistemas concretos, benchmarks, cuellos de
-botella y riesgos éticos.
+!!! tip "La tesis de la wiki"
+    Un LLM es útil para interpretar, traducir o proponer. Un sistema simbólico
+    es útil para verificar, planificar o deducir. La IA neurosimbólica funciona
+    cuando esa división de responsabilidades está diseñada con cuidado.
 
-!!! tip "TL;DR"
-    Los LLMs son buenos interpretando lenguaje natural, pero frágiles al razonar
-    formalmente. Los sistemas simbólicos son verificables, pero necesitan
-    entradas formales. La IA neurosimbólica los combina: el componente neuronal
-    traduce o propone; el componente simbólico verifica, planifica o deduce.
+<div class="nesy-statline">
+  <div class="nesy-stat">
+    <strong>6</strong>
+    <span>tipos de Kautz explicados con ejemplos y errores frecuentes</span>
+  </div>
+  <div class="nesy-stat">
+    <strong>3</strong>
+    <span>familias de sistemas: planificación, lógica y búsqueda de pruebas</span>
+  </div>
+  <div class="nesy-stat">
+    <strong>1</strong>
+    <span>pregunta crítica: ¿el solver resolvió el problema correcto?</span>
+  </div>
+</div>
 
-## Por dónde empezar
+## Lee esto como un recorrido
 
-- Si nunca has oído hablar de NeSy: [¿Qué es la IA neurosimbólica?](overview/que-es-nesy.md)
-- Si quieres el mapa conceptual: [Taxonomía de Kautz](taxonomia/kautz-overview.md)
-- Si buscas sistemas concretos: [LLM+P](sistemas/llm-p.md), [Logic-LM](sistemas/logic-lm.md), [AlphaGeometry2](sistemas/alphageometry2.md)
-- Si te interesan los límites: [Fragilidad de traducción](analisis-critico/fragilidad-traduccion.md)
-- Si te preocupa la dimensión social: [Explainability laundering](etica/explainability-laundering.md)
+<div class="reading-path">
+  <a class="path-step" href="guia/conceptos/">
+    <strong>1. Conceptos base</strong>
+    <span>LLMs, sistemas simbólicos, grounding y Sistema 1/Sistema 2.</span>
+  </a>
+  <a class="path-step" href="guia/taxonomia/">
+    <strong>2. Taxonomía</strong>
+    <span>Los seis tipos de Kautz y la trampa de AlphaGeometry2.</span>
+  </a>
+  <a class="path-step" href="guia/pipelines/">
+    <strong>3. Pipelines</strong>
+    <span>Cómo se pasa de lenguaje natural a PDDL, FOL, SMT o pruebas.</span>
+  </a>
+  <a class="path-step" href="guia/casos/">
+    <strong>4. Sistemas reales</strong>
+    <span>LLM+P, DUPLEX, Logic-LM, CEGIS, AlphaGeometry2 y NELLIE.</span>
+  </a>
+  <a class="path-step" href="guia/evidencia/">
+    <strong>5. Evidencia</strong>
+    <span>Resultados de PlanBench, Logic-LM, LLM+P y AlphaGeometry2.</span>
+  </a>
+  <a class="path-step" href="guia/fragilidad/">
+    <strong>6. Crítica técnica</strong>
+    <span>Traducción frágil, latencia y trade-off soundness/generalidad.</span>
+  </a>
+  <a class="path-step" href="guia/etica/">
+    <strong>7. Ética</strong>
+    <span>Sesgo híbrido, explainability laundering y accountability parcial.</span>
+  </a>
+</div>
 
-## La idea en 30 segundos
+## La idea en una figura
 
 ```mermaid
 flowchart LR
-    A[Lenguaje natural] --> B[LLM / modelo neuronal]
-    B --> C[Representación formal<br/>PDDL · FOL · SMT]
-    C --> D[Solver / planificador<br/>Z3 · Fast Downward · DDAR]
-    D --> E[Resultado verificable]
-    E --> F[Verbalización o prueba auditable]
+    A["Lenguaje natural"] --> B["LLM: interpreta o formaliza"]
+    B --> C["Representación formal"]
+    C --> D["Solver / planificador / motor deductivo"]
+    D --> E["Resultado verificable"]
+    E --> F{"¿Fallo o inconsistencia?"}
+    F -- Sí --> G["Feedback al LLM"]
+    G --> B
+    F -- No --> H["Respuesta, plan o prueba auditable"]
 ```
 
-## Estructura de la wiki
+## Qué contiene cada zona
 
-| Bloque | Qué contiene |
+<div class="nesy-grid">
+  <article class="nesy-card">
+    <h3>Ruta guiada</h3>
+    <p>Capítulos largos y didácticos. Úsala como lectura principal.</p>
+    <a href="guia/">Entrar a la ruta</a>
+  </article>
+  <article class="nesy-card">
+    <h3>Sistemas</h3>
+    <p>Fichas de arquitecturas concretas para consultar rápido.</p>
+    <a href="sistemas/alphageometry2/">Ver AlphaGeometry2</a>
+  </article>
+  <article class="nesy-card">
+    <h3>Referencia</h3>
+    <p>Taxonomía, técnicas, benchmarks, comparativas y páginas de apoyo.</p>
+    <a href="taxonomia/kautz-overview/">Abrir referencia</a>
+  </article>
+</div>
+
+## Si solo tienes diez minutos
+
+1. Lee [Conceptos base](guia/conceptos.md).
+2. Mira la tabla de [Taxonomía](guia/taxonomia.md).
+3. Lee la explicación de [AlphaGeometry2](guia/casos.md#alphageometry2).
+4. Revisa [Evidencia empírica](guia/evidencia.md).
+5. Termina con [Fragilidad y límites](guia/fragilidad.md).
+
+## Material de consulta rápida
+
+| Necesitas aclarar | Página |
 |---|---|
-| [Visión general](overview/que-es-nesy.md) | Motivación, *symbol grounding* y marco dual-process. |
-| [Taxonomía](taxonomia/kautz-overview.md) | Los seis tipos de Kautz y su mapeo a LLMs. |
-| [Sistemas](sistemas/llm-p.md) | LLM+P, DUPLEX, Logic-LM, CEGIS, AlphaGeometry2 y NELLIE. |
-| [Técnicas](tecnicas/self-refinement.md) | PDDL, SMT, self-refinement, schema-guided IE y construcciones auxiliares. |
-| [Análisis crítico](analisis-critico/latencia.md) | Latencia, fragilidad de traducción y trade-off soundness/generalidad. |
-| [Ética](etica/doble-sesgo.md) | Sesgo híbrido, accountability y legitimación por explicabilidad. |
-
-## Ver también
-
-- [Glosario](glosario.md)
-- [Bibliografía](bibliografia.md)
-- [Matriz funcional](comparativas/matriz-funcional.md)
-- [PlanBench](benchmarks/planbench.md)
+| Vocabulario técnico | [Glosario](glosario.md) |
+| Papers y fuentes | [Bibliografía](bibliografia.md) |
+| Cifras del merged | [Evidencia empírica](guia/evidencia.md) |
+| Diferencia LLM puro vs NeSy | [LLM vs NeSy](comparativas/llm-vs-nesy.md) |
+| Por qué falla la interfaz | [Fragilidad de traducción](analisis-critico/fragilidad-traduccion.md) |
+| Cómo clasificar AlphaGeometry2 | [Tipo 2](taxonomia/tipo-2.md) |

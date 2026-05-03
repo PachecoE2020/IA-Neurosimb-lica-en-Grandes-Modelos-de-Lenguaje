@@ -9,6 +9,10 @@
     El LLM propone un programa candidato; Z3 lo verifica. Si falla, Z3 devuelve
     un contraejemplo concreto que guía la siguiente propuesta.
 
+!!! note "Dónde encaja en la ruta"
+    Lee esta ficha junto con [Logic-LM](logic-lm.md). La diferencia didáctica
+    clave es la calidad del feedback: CEGIS devuelve contraejemplos concretos.
+
 ## Pipeline
 
 ```mermaid
@@ -25,6 +29,11 @@ flowchart TD
 
 Un contraejemplo concreto es feedback denso. No dice solo "fallaste"; dice en
 qué input falló el candidato.
+
+## Cómo explicarlo en una frase
+
+CEGIS permite que el LLM falle de forma útil: cada fallo produce un
+contraejemplo que estrecha el espacio de soluciones posibles.
 
 ## Fortalezas
 

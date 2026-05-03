@@ -10,6 +10,10 @@
     backward chaining estilo Prolog, pero reemplaza la unificación sintáctica por
     unificación semántica vía NLI.
 
+!!! note "Dónde encaja en la ruta"
+    Lee esta ficha después de [Sistemas concretos](../guia/casos.md). NELLIE es
+    útil para discutir el trade-off entre generalidad y garantías formales.
+
 ## Arquitectura
 
 ```mermaid
@@ -25,6 +29,11 @@ flowchart TB
 
 En Prolog, los átomos son símbolos exactos. En NELLIE, los átomos son frases en
 lenguaje natural. Esto aumenta generalidad, pero reduce soundness.
+
+## Cómo explicarlo en una frase
+
+NELLIE gana flexibilidad al razonar sobre lenguaje natural, pero paga esa
+flexibilidad con una unificación semántica menos estricta que la lógica clásica.
 
 ## Fortalezas
 

@@ -1,122 +1,106 @@
 # Introducción a la IA Neurosimbólica (NeSy) y el Paradigma LLM
 
-## El Problema del "Symbol Grounding" y la Naturaleza del Razonamiento
+## 1. El Problema del "Symbol Grounding" y la Naturaleza del Razonamiento
 
-Históricamente, el desarrollo de la Inteligencia Artificial ha estado dominado por dos paradigmas ortogonales: el conexionista (aprendizaje inductivo basado en datos) y el simbólico (razonamiento deductivo basado en reglas) [1], [2]. Los Grandes Modelos de Lenguaje (LLMs) encapsulan el estado del arte del paradigma conexionista, operando como arquitecturas probabilísticas masivas que sobresalen en el reconocimiento de patrones y la generalización sobre datos no estructurados, pero que son incapaces de proveer garantías formales sobre la veracidad de sus salidas.
+Históricamente, el desarrollo de la Inteligencia Artificial ha estado dominado por dos paradigmas ortogonales: el conexionista (aprendizaje inductivo basado en datos) y el simbólico (razonamiento deductivo basado en reglas explícitas) [1], [2]. Los Grandes Modelos de Lenguaje (LLMs) encapsulan el estado del arte del paradigma conexionista moderno. Operan como arquitecturas probabilísticas masivas que sobresalen en el reconocimiento de patrones y la generalización sobre datos no estructurados, pero que son intrínsecamente incapaces de proveer garantías formales sobre la veracidad de sus salidas.
 
-En el extremo opuesto, la IA simbólica clásica ejecuta el razonamiento mediante motores deductivos estructurados (solucionadores SAT/SMT, planificadores PDDL o sistemas expertos), los cuales garantizan un comportamiento completamente determinista, explicabilidad absoluta y seguridad matemáticamente verificable. 
+En el extremo opuesto, la IA simbólica clásica ejecuta el razonamiento mediante motores deductivos estructurados (solucionadores SAT/SMT, planificadores PDDL o sistemas expertos). Estos sistemas garantizan un comportamiento completamente determinista, una explicabilidad absoluta y una seguridad matemáticamente verificable. Sin embargo, la computación simbólica sufre de un cuello de botella crítico en la adquisición de conocimiento: es extremadamente intolerante al ruido y requiere una traducción manual y exhaustiva de los entornos reales (de alta dimensionalidad) a representaciones formales rígidas.
 
-Sin embargo, la computación simbólica sufre de un cuello de botella crítico en la adquisición de conocimiento: es intolerante al ruido y requiere una traducción manual exhaustiva de los entornos reales de alta dimensionalidad a representaciones formales rígidas.
+A pesar de que técnicas de inyección de contexto (como *Chain-of-Thought*) inducen capacidades emergentes de razonamiento paso a paso en los LLMs [3], estos modelos siguen siendo fundamentalmente cajas negras estocásticas. Carecen de un mecanismo intrínseco para asegurar la fidelidad lógica de sus inferencias. 
 
-A pesar de que técnicas de inyección de prompts (como Chain-of-Thought) inducen capacidades emergentes de razonamiento paso a paso en los LLMs [3], estos modelos siguen siendo fundamentalmente cajas negras estocásticas que carecen de un mecanismo intrínseco para asegurar la fidelidad lógica de sus inferencias. 
+El problema del *Symbol Grounding*, formulado originalmente por Stevan Harnad en 1990, expone la imposibilidad de que un sistema computacional puramente formal adquiera semántica intrínseca basándose únicamente en la manipulación sintáctica de símbolos. En el contexto de los LLMs actuales, este dilema persiste bajo una nueva forma: aunque los modelos proyectan secuencias de texto en espacios vectoriales de alta dimensionalidad, capturando relaciones estadísticas asombrosamente ricas, estas representaciones latentes siguen "flotando" sin un anclaje causal (*grounding*) a las leyes discretas, la ontología y la física del mundo real. Un LLM puede generar la demostración matemática correcta de un teorema porque ha modelado la distribución de probabilidad de textos matemáticos similares, no porque su arquitectura "comprenda" los axiomas subyacentes.
 
-El problema del Symbol Grounding, formulado originalmente por Stevan Harnad en 1990, expone la imposibilidad de que un sistema computacional puramente formal adquiera semántica intrínseca basándose únicamente en la manipulación sintáctica de símbolos. En el contexto de los LLMs, este dilema persiste bajo una nueva forma: aunque los modelos proyectan secuencias de texto en espacios vectoriales de alta dimensionalidad capturando relaciones estadísticas asombrosamente ricas, estas representaciones latentes siguen "flotando" sin un anclaje causal (grounding) a las leyes discretas, la ontología y la física del mundo real. Un LLM puede generar la demostración matemática correcta de un teorema porque ha modelado la distribución de probabilidad de textos matemáticos similares, no porque su arquitectura "comprenda" los axiomas subyacentes.
+Como resultado, cuando un LLM es forzado a ejecutar tareas de razonamiento deductivo complejo o planificación a largo plazo de manera aislada (*end-to-end*), exhibe una degradación severa manifestada en alucinaciones, deriva semántica y violaciones a restricciones lógicas [4].
 
-Como resultado, cuando un LLM es forzado a ejecutar tareas de razonamiento deductivo o planificación a largo plazo de manera aislada (end-to-end), exhibe una degradación severa manifestada en alucinaciones, deriva semántica y violaciones a restricciones lógicas [4].
+La Inteligencia Artificial Neurosimbólica (NeSy) emerge no como un ensemble superficial, sino como una solución estructural a esta dicotomía [5]. El objetivo de diseño es construir una arquitectura híbrida que emule la cognición de sistema dual [6]: el procesamiento rápido, intuitivo y probabilístico (Sistema 1) proporcionado por el LLM, acoplado al procesamiento lento, deliberativo y lógico (Sistema 2) de un motor simbólico. 
 
-La Inteligencia Artificial Neurosimbólica (NeSy) emerge no como un ensemble superficial, sino como una solución estructural a esta dicotomía [5]. El objetivo de diseño es construir una arquitectura híbrida que emule la cognición de sistema dual [6]: el procesamiento intuitivo y probabilístico (Sistema 1) del LLM, acoplado al procesamiento deliberativo y lógico (Sistema 2) del motor simbólico. El paradigma NeSy postula que la Inteligencia Artificial General (AGI) no se alcanzará simplemente escalando el número de parámetros del Sistema 1 (LLMs), sino construyendo topologías que integren formalmente ambos sistemas.
+## 2. Evolución de la Taxonomía NeSy: De Kautz al Modelo Multidimensional
 
-Al utilizar LLMs estrictamente como extractores de información semántica y traductores de lenguaje natural a un formalismo lógico (como Lógica de Primer Orden o PDDL), y delegar el cálculo inferencial a un solucionador simbólico, las arquitecturas NeSy eliminan el cuello de botella de la adquisición de conocimiento sin sacrificar la trazabilidad matemática ni la transparencia del árbol de prueba final.
+Para estructurar algorítmicamente las arquitecturas de integración entre el aprendizaje estadístico y el razonamiento deductivo, la literatura académica tomó como base fundacional la taxonomía lineal de seis tipos formulada por Henry Kautz en 2020 [7]. Este modelo clásico clasificaba los sistemas basándose en el acoplamiento estructural y la direccionalidad del flujo de datos:
 
-La barrera fundamental para orquestar la integración NeSy reside en la incompatibilidad estructural de sus representaciones de conocimiento. El paradigma conexionista de los LLMs utiliza representaciones continuas, distribuidas y sub-simbólicas (embeddings), donde el conocimiento es una propiedad emergente y holística de matrices de pesos opacas. Por el contrario, el paradigma simbólico exige representaciones discretas, localizadas y explícitas (grafos, árboles, reglas lógicas), donde cada nodo o símbolo tiene un significado semántico inmutable. La taxonomía de integración NeSy es, en el fondo, la clasificación de los diversos algoritmos de "traducción" diseñados para cruzar este abismo dimensional entre espacios métricos continuos y estructuras lógicas discretas.
+* **Tipo 1 (Symbolic Neuro Symbolic):** Procesamiento neuronal estándar (entrada y salida discreta).
+* **Tipo 2 (Symbolic[Neuro]):** Solucionadores simbólicos clásicos (ej. árboles de búsqueda) que usan subrutinas neuronales como heurísticas (ej. la arquitectura original de AlphaGo).
+* **Tipo 3 (Neuro ∪ Symbolic):** Sistemas híbridos acoplados bidireccionalmente e interactivos.
+* **Tipo 4 (Neuro → Symbolic):** Pipelines en cascada, donde la red extrae información y el motor deductivo razona.
+* **Tipo 5 (NeuroSYMBOLIC):** Compilación de reglas lógicas como restricciones en la función de pérdida durante el entrenamiento.
+* **Tipo 6 (Neuro[Symbolic]):** Fusión intrínseca, donde el razonamiento combinatorio ocurre de forma nativa en la topología de la red.
 
+Sin embargo, a medida que las arquitecturas basadas en LLMs han incrementado su complejidad, el modelo unidimensional de Kautz resulta insuficiente. Para abordar esto, la investigación moderna, liderada por autores como Wang et al. (2024) [1], ha adoptado una **Taxonomía de Cuatro Dimensiones**. 
 
-## Taxonomía Fundamental de la IA Neurosimbólica (Modelo de Kautz)
-Para estructurar algorítmicamente las arquitecturas de integración entre el aprendizaje estadístico y el razonamiento deductivo, la literatura académica adopta la taxonomía estándar formulada por Kautz [7]. 
+A diferencia de los tipos clásicos, estas cuatro dimensiones son ortogonales e independientes, permitiendo diseccionar un sistema analizando sus propiedades aisladas:
 
-> **Vídeo de referencia:** Recomendamos ver la conferencia magistral original donde se popularizó este modelo: [The Third AI Summer (AAAI 2020 Robert S. Engelmore Memorial Award Lecture)](https://www.youtube.com/watch?v=_cQITY0SPiw). En ella, el Dr. Kautz realiza una disertación exhaustiva sobre la evolución histórica y la formulación de estas seis arquitecturas.
+1.  **Integración Neurosimbólica (*Neural-Symbolic Integration*):** Define el nivel y la dirección del acoplamiento estructural. Clasifica si el sistema es secuencial (pipeline cascada), si los módulos operan como subrutinas débilmente acopladas (*loosely-coupled*), o si existe una fusión intrínseca.
+2.  **Representación del Conocimiento (*Knowledge Representation*):** Define en qué formalismo se expresan los axiomas o símbolos. Las opciones incluyen Lógica de Primer Orden/Proposicional, Grafos de Conocimiento (*Knowledge Graphs*), Lenguajes de Programación (como Python o PDDL), o Ecuaciones Matemáticas.
+3.  **Incrustación del Conocimiento (*Knowledge Embedding*):** Describe el mecanismo matemático o algorítmico mediante el cual los símbolos discretos se conectan con el espacio latente (continuo) de la red. Puede ser mediante restricciones en la función de pérdida (*Loss constraints*), tensores lógicos, o traducción semántica vía generación de texto (*parsing*).
+4.  **Funcionalidad (*Functionality*):** Establece el propósito final de la integración híbrida, típicamente dividido en dos grandes objetivos: usar la lógica para mejorar el **Aprendizaje** (convergencia más rápida, robustez al ruido), o usar la red para guiar el **Razonamiento** (evitar la explosión combinatoria en los solvers clásicos).
 
-Este modelo clasifica los sistemas Neurosimbólicos (NeSy) en seis topologías basadas en la direccionalidad del flujo de datos, el acoplamiento estructural y el mecanismo de inferencia. A continuación, se presenta esta taxonomía adaptada rigurosamente al ecosistema de los Grandes Modelos de Lenguaje (LLMs):
+## 3. Grandes Modelos de Lenguaje (LLMs) y su Mapeo Taxonómico
 
-### Tipo 1 (Symbolic Neuro Symbolic): Arquitectura de Entrada/Salida Discreta
+En su arquitectura nativa (sin herramientas externas), los LLMs operan en el nivel más superficial de integración (Tipo 1 de Kautz). Procesan símbolos discretos proyectándolos en *embeddings* vectoriales y decodificando la salida. Toda "coherencia" es un subproducto estadístico del modelado autorregresivo.
 
-Es la configuración nativa de los LLMs actuales. El sistema recibe secuencias de símbolos discretos (texto en lenguaje natural), emplea una red neuronal para proyectar estos símbolos en un espacio de embeddings vectoriales continuos, procesa los patrones latentes y decodifica la salida nuevamente a símbolos discretos.
+Para dotar a los LLMs de verdaderas capacidades deductivas, la ingeniería de IA actual los proyecta sobre el espacio multidimensional de Wang et al. a través de dos estrategias principales: la inyección de conocimiento durante el entrenamiento y la orquestación modular interactiva durante la inferencia.
 
-Se trata del nivel de integración más superficial. Aunque el modelo genera secuencias que aparentan coherencia lógica, no existe un motor de razonamiento formal interno ni validación estructurada. La "lógica" es meramente un subproducto estadístico del modelado de lenguaje, lo que condena al sistema a alucinaciones severas y falencias críticas en deducciones multi-paso complejas.
+### Integración en el Entrenamiento (Funcionalidad: Aprendizaje)
+Este enfoque prescinde de *solvers* externos durante el tiempo de ejecución. El conocimiento simbólico se inyecta en la red neuronal alterando su mecanismo de **Incrustación de Conocimiento** (típicamente a través de *Semantic Loss* o *Logic Tensor Networks* [8], [9]). Dado que el cálculo de gradientes es incompatible con la lógica booleana discreta, las restricciones formales se relajan hacia dominios continuos y diferenciables. 
 
-### Tipo 2 (Symbolic[Neuro]): Subrutinas Neuronales en Motores Simbólicos
+Al minimizar la probabilidad marginal de que las salidas de la red violen axiomas físicos o lógicos predefinidos, se fuerza a la topología de la red a converger hacia un espacio latente que sea intrínsecamente consistente con las reglas del dominio [10]. Aunque es elegante a nivel teórico, su escalabilidad computacional en LLMs de miles de millones de parámetros sigue siendo un desafío abierto, y el modelo solo ofrece "probabilidades de consistencia", no garantías matemáticas deterministas.
 
-La arquitectura es gobernada por un solver simbólico clásico (ej. un planificador o un motor de búsqueda en árboles como AlphaGo) que delega tareas intratables analíticamente a submódulos neuronales. En el contexto de los LLMs, el modelo de lenguaje actúa estrictamente como una función heurística. El motor simbólico genera un árbol de estados lógicos y utiliza el LLM en cada nodo para evaluar la probabilidad de éxito de una ramificación o extraer características semánticas específicas.
+### Integración en Tiempo de Inferencia (Funcionalidad: Razonamiento)
+Este es el paradigma dominante y más práctico en el estado del arte actual (ej. LOGIC-LM [11], LLM+P [12]). Funciona bajo una **Integración** tipo Pipeline (*Neuro → Simbólico*). 
 
-El acoplamiento es débil. La invocación repetitiva de un LLM masivo (miles de millones de parámetros) en cada nodo de un árbol de búsqueda simbólica introduce una latencia prohibitiva. Esta arquitectura es computacionalmente ineficiente para sistemas que requieren inferencia en tiempo real.
+En este esquema, el LLM opera exclusivamente como un traductor que mapea el lenguaje natural no estructurado hacia una **Representación** tipada estricta (ej. código PDDL, sentencias SMT o consultas SPARQL). Esta formulación se transfiere a un motor de inferencia clásico, el cual ejecuta el cálculo deductivo de forma 100% determinista. Si ocurre un fallo sintáctico, el error del compilador se realimenta al LLM en un bucle iterativo de autoreflexión (*Self-Refinement*). 
 
-### Tipo 3 (Neuro ∪ Symbolic): Sistemas Híbridos Acoplados Bidireccionalmente
+La vulnerabilidad crítica de este paradigma reside en la interfaz de traducción: los *solvers* carecen de tolerancia a la ambigüedad y colapsan catastróficamente ante la más mínima alucinación generada por la estocasticidad del LLM en la fase de extracción de información.
 
-Consiste en un bucle cooperativo donde los componentes estadísticos y deductivos interactúan dinámicamente. Un LLM ingiere datos no estructurados y computa distribuciones de probabilidad sobre hechos o premisas. Estas predicciones probabilísticas se inyectan en un motor de inferencia lógico-probabilística (como ProbLog). El motor simbólico computa la demostración lógica y, crucialmente, calcula el gradiente de pérdida basado en el éxito de la prueba, retropropagando este error hacia la red neuronal para actualizar sus pesos.
+---
 
-Aunque permite un aprendizaje guiado por la lógica, la retropropagación a través de motores de inferencia discretos requiere técnicas complejas de estimación de gradientes. El costo computacional de calcular conteos de modelos algebraicos (algebraic model counting) en cada iteración vuelve a esta arquitectura sumamente difícil de escalar a la dimensionalidad de un LLM moderno.
+## 4. Clasificación de la Literatura 
 
-### Tipo 4 (Neuro → Symbolic): Pipeline en Cascada (Extracción hacia Deducción)
+Aplicando la Taxonomía Multidimensional a la literatura académica más reciente sobre LLMs Neurosimbólicos, podemos agrupar la investigación del estado del arte en cuatro grandes familias:
 
-Es el paradigma dominante en la integración NeSy en tiempo de inferencia. El LLM opera exclusivamente como un Extractor de Información (IE) o analizador semántico (Semantic Parser). El LLM recibe el prompt en lenguaje natural y lo compila en representaciones formales estrictas (p. ej. Lógica de Primer Orden, consultas SPARQL, o lenguaje PDDL). Esta salida estructurada se pasa como input determinista a un solucionador simbólico externo (ej. solvers SMT o motores de conocimiento), el cual ejecuta el razonamiento formal y devuelve la respuesta.
+### Familia A: Razonamiento Secuencial vía Programación y Planificación
+Sistemas que utilizan el LLM como interfaz de traducción semántica (*Semantic Parser*) y delegan el esfuerzo computacional a planificadores lógicos o intérpretes de código.
+* **Documentos clave:** *LOGIC-LM* (Pan et al., 2023), *DUPLEX* (Hua et al., 2026), *LLM+P* (Liu et al., 2023), *PAL* (Gao et al., 2023), *Counterexample Guided Inductive Synthesis* (Jha et al., 2023).
+* **Integración:** Pipeline Cascada (*Neuro → Simbólico*) y bucles interactivos (*Self-Refinement*).
+* **Representación del Conocimiento:** Lenguajes de Programación (Python) y Lenguajes de Definición de Dominios (PDDL, sintaxis SMT).
+* **Incrustación del Conocimiento:** Generación y extracción determinista de texto estructurado.
+* **Funcionalidad principal:** Razonamiento estricto y Planificación a largo plazo.
 
-Este enfoque adolece de una vulnerabilidad crítica en la interfaz de traducción. Dado que la comunicación es unidireccional y el solver simbólico carece de tolerancia a la ambigüedad, si el LLM omite una premisa, alucina una variable no declarada o comete un error sintáctico mínimo en la extracción, la cadena de ejecución colapsa catastróficamente.
+### Familia B: Consistencia Lógica por Optimización
+Modelos que buscan que la red neuronal "aprenda" axiomas lógicos modificando su función de optimización matemática, sin requerir solvers externos durante la ejecución.
+* **Documentos clave:** *Logically Consistent Language Models via NeSy Integration* (Calanzone et al., 2024), *Logical Neural Networks* (Riegel et al., 2020).
+* **Integración:** Integración Compilada en el entrenamiento (Equivalente al Tipo 5).
+* **Representación del Conocimiento:** Lógica de Primer Orden, Lógica Difusa.
+* **Incrustación del Conocimiento:** Funciones de pérdida semántica (*Semantic Loss*), Restricciones suaves (*Soft-constraints*) mediante tensores.
+* **Funcionalidad principal:** Aprendizaje robusto, reducción de sesgos y consistencia factual.
 
-### Tipo 5 (NeuroSYMBOLIC): Compilación Lógica en la Función de Pérdida
+### Familia C: Razonamiento Basado en Grafos de Conocimiento
+Frameworks que atacan las alucinaciones limitando el espacio de búsqueda latente del LLM utilizando la topología estructurada de bases de datos de conocimiento (ontologías).
+* **Documentos clave:** *Reasoning on Graphs* (Luo et al., 2023), *Graph of Thoughts* (Besta et al., 2024).
+* **Integración:** Acoplamiento Débil/Interactivo.
+* **Representación del Conocimiento:** Grafos de Conocimiento (*Knowledge Graphs*).
+* **Incrustación del Conocimiento:** Búsqueda en estructuras de grafos y *Graph Embeddings*.
+* **Funcionalidad principal:** Razonamiento explicable y extracción de información verificable.
 
-Esta topología integra el conocimiento deductivo durante el entrenamiento de la red, sin depender de solvers externos en tiempo de inferencia. Se emplean marcos como Lógica Difusa (Fuzzy Logic) y Logic Tensor Networks (LTNs) [8], [9] que relajan las funciones booleanas discretas de la Lógica de Primer Orden hacia una lógica difusa continua y diferenciable. Las reglas simbólicas se inyectan como restricciones suaves (soft-constraints) en la función de pérdida. Durante el entrenamiento, la red es penalizada topológicamente si sus predicciones violan los axiomas lógicos predefinidos [10].
-
-Una aproximación estándar es el uso de funciones de pérdida semántica (Semantic Loss). En este paradigma, el optimizador no solo evalúa el error predictivo tradicional, sino que computa el conteo de modelos ponderados (Weighted Model Counting), calculando la probabilidad marginal de que la salida de la red satisfaga un conjunto de fórmulas lógicas predefinidas. La red es penalizada topológicamente durante el gradiente descendente si sus representaciones latentes violan axiomas físicos o lógicos, forzándola a converger en un espacio paramétrico intrínsecamente coherente con las reglas del dominio.
-
-Obligar a un LLM a optimizar restricciones lógicas complejas sobre una distribución marginal durante el backpropagation eleva exponencialmente la carga computacional. Además, este enfoque es una aproximación estadística de la lógica; la red "aprende" a imitar reglas lógicas, pero en tiempo de inferencia no ofrece ninguna garantía determinista ni verificabilidad matemática estricta contra violaciones de restricciones.
-
-### Tipo 6 (Neuro[Symbolic]): Fusión Intrínseca de Razonamiento Combinatorio
-
-Representa el nivel máximo de integración teórica. Un motor de pensamiento simbólico se incrusta estructuralmente en el tejido de la arquitectura neuronal. El sistema emula de forma nativa la resolución analítica mediante cálculos tensoriales, permitiendo que la red neuronal ejecute razonamiento formal, deducción y planificación combinatoria de manera simultánea al procesamiento sub-simbólico continuo. Es el equivalente algorítmico a la unificación perfecta del Sistema 1 (intuitivo/estadístico) y el Sistema 2 (deliberativo/lógico) de Kahneman.
-
-En el estado del arte de la inteligencia artificial, el Tipo 6 sigue siendo un horizonte teórico. Ningún LLM actual logra emular el razonamiento combinatorio algorítmico de manera intrínseca y escalable, manteniendo a esta categoría como el principal reto abierto de la investigación en arquitecturas NeSy.
-
-<p align="center">
-  <img src="taxonomy.png" alt="Taxonomía de Kautz de la IA Neurosimbólica" width="600">
-</p>
-
-<p align="center">
-  <em>Figura: Taxonomía de Kautz aplicada a arquitecturas de IA neurosimbólica. Fuente: Imagen Generada con Nano Banana 2.</em>
-</p>
-
-## Grandes Modelos de Lenguaje (LLMs) y su Mapeo Taxonómico
-
-En su arquitectura nativa, los Grandes Modelos de Lenguaje operan bajo el Tipo 1 (Symbolic Neuro Symbolic) de la taxonomía de Kautz. Estos modelos ingieren secuencias de símbolos discretos (texto en lenguaje natural), los proyectan en un espacio de embeddings vectoriales para su procesamiento sub-simbólico, y decodifican la salida nuevamente hacia el espacio discreto. En este nivel de integración superficial, la coherencia deductiva es un mero subproducto estadístico del modelado de lenguaje autorregresivo. Al carecer de un motor de inferencia formal interno, los LLMs exhiben fallas sistemáticas en la verificación de hechos y son estructuralmente propensos a contradecir sus propias premisas durante el razonamiento lógico complejo.
-
-Para dotar a los LLMs de capacidades deductivas y garantías de seguridad, la ingeniería de IA actual mapea su arquitectura hacia niveles superiores de integración NeSy. La literatura divide estos esfuerzos en dos paradigmas ortogonales: la inyección de restricciones durante la optimización de parámetros y la orquestación modular en tiempo de inferencia.
-
-### Integración en el Entrenamiento (Optimización de Parámetros - Mapeo a Tipo 5) 
-
-Este enfoque, correspondiente al Tipo 5 (NeuroSYMBOLIC), prescinde de solvers externos durante el tiempo de ejecución. En su lugar, el conocimiento simbólico y las reglas deductivas se compilan directamente en los pesos de la red neuronal como restricciones suaves (soft-constraints) durante la fase de entrenamiento (ej. Logic Tensor Networks o LTNs).
-
-Dado que el cálculo de gradientes es incompatible con la lógica booleana discreta, las restricciones formales se relajan hacia dominios continuos y diferenciables. Una implementación matemática estándar es la Semantic Loss (Pérdida Semántica) [11]. En este flujo, el LLM genera una distribución de probabilidad sobre los valores de verdad de un conjunto de hechos. Posteriormente, el optimizador calcula el conteo de modelos ponderados (Weighted Model Counting), evaluando la probabilidad marginal de que la distribución de verdad del LLM satisfaga un conjunto de fórmulas lógicas predefinidas. Al minimizar el logaritmo negativo de esta probabilidad, se fuerza a la topología de la red a converger hacia un espacio latente que evite contradicciones lógicas.
-
-Computar la satisfacción de fórmulas lógicas sobre distribuciones marginales en cada iteración del backpropagation introduce un coste computacional prohibitivo, limitando severamente su escalabilidad a LLMs de miles de millones de parámetros. Más críticamente, este método solo aproxima el comportamiento lógico desde una perspectiva probabilística, por lo que no puede proveer garantías matemáticas deterministas contra la violación de restricciones en entornos de ejecución reales.
-
-### Integración en Tiempo de Inferencia (Uso de Herramientas y Solvers - Mapeo a Tipo 3 y Tipo 4) 
-
-Este es el paradigma dominante en arquitecturas del estado del arte, ejemplificado en marcos como Logic-LM [12], DUPLEX [13] y LLM+P [14]. Orquesta un acoplamiento modular en cascada (Tipo 4: Neuro → Symbolic) o bidireccional iterativo (Tipo 3: Neuro ∪ Symbolic), delegando el razonamiento estricto a motores deductivos externos y limitando al LLM a funciones de interfaz semántica.
-
-Pipeline:
-
-1. **Extracción de Información (IE) y Formulación**: El LLM recibe una instrucción en lenguaje natural no estructurado. Guiado por esquemas predefinidos (mediante prompting o in-context learning), el modelo actúa como un extractor de entidades y relaciones, mapeándolas de forma determinista hacia un lenguaje formal tipado, como Planning Domain Definition Language (PDDL) o sintaxis para solvers SMT [15].
-
-2. **Razonamiento Simbólico**: Esta formulación simbólica se transfiere a un motor de inferencia determinista (ej. Z3, planificadores como Fast Downward o motores Prolog). El solver computa la prueba lógica o la ruta de búsqueda óptima sin intervención neuronal [16].
-
-3. **Bucle de Reflexión (Self-Refinement)**: Si el motor simbólico detecta una sintaxis malformada o una formulación lógicamente irresoluble (ej. dependencias insatisfechas), el mensaje de error del compilador se inyecta de vuelta en la ventana de contexto del LLM. Esta retroalimentación lingüística aproxima un comportamiento Tipo 3 (Neuro ∪ Symbolic), aunque técnicamente sigue siendo un pipeline Tipo 4 iterativo o de uso de herramientas (Tool-use), orquestando un bucle de corrección. El modelo utiliza esta señal de diagnóstico para revisar, depurar y regenerar iterativamente la representación simbólica inicial sin intervención humana.
-
-Esta arquitectura presenta una vulnerabilidad extrema en la capa inicial de traducción. Si el LLM omite una precondición implícita del entorno, alucina un predicado fuera del vocabulario o corrompe la sintaxis durante la extracción de información, la ejecución del solver colapsa catastróficamente. Además, la dependencia del bucle de Self-Refinement, combinada con la complejidad temporal intrínseca (a menudo NP-Hard o PSPACE) de los solvers SMT y planificadores clásicos, genera picos de latencia inaceptables [17]. Esto inhabilita el uso de estos pipelines NeSy para sistemas autónomos que requieran inferencia y planificación reactiva en tiempo real.
-
-Estas vulnerabilidades en la interfaz de traducción demuestran que, si bien la integración NeSy ofrece un camino prometedor, es imperativo analizar en profundidad las fallas estructurales inherentes a los modelos conexionistas puros para comprender por qué el "rescate simbólico" es indispensable en tareas críticas, como se detallará en la siguiente sección.
-
-> **Vídeo ilustrativo:** Para una representación visual didáctica sobre la fusión del reconocimiento de patrones (paradigma conexionista) con la extrapolación lógica (paradigma simbólico), consulta el video introductorio de IBM Technology: [What Is NeuroSymbolic AI? Bridging Reasoning & Neural Networks](https://www.youtube.com/watch?v=ZfWDVO3rzeA).
+### Familia D: Solucionadores Híbridos para Matemáticas Complejas
+Arquitecturas diseñadas específicamente para resolver la explosión combinatoria en teoremas matemáticos u olimpiadas geométricas, usando el LLM como "intuición heurística" y motores simbólicos puros para el cálculo ciego.
+* **Documentos clave:** *AlphaGeometry* y *AlphaGeometry2* (Trinh et al., 2024; Chervonyi et al., 2025).
+* **Integración:** Subrutinas interactuando en bucle (*Symbolic[Neuro]*).
+* **Representación del Conocimiento:** Geometría Analítica, Sistemas de Ecuaciones.
+* **Incrustación del Conocimiento:** Generación de lenguaje (el LLM propone construcciones auxiliares basadas en lenguaje para destrabar al motor analítico).
+* **Funcionalidad principal:** Razonamiento deductivo avanzado.
 
 ---
 
 ### Referencias
 
-[1] W. Wang, Y. Yang, and F. Wu, "Towards Data-And Knowledge-Driven AI: A Survey on Neuro-Symbolic Computing," *IEEE Transactions on Pattern Analysis and Machine Intelligence*, vol. 47, no. 2, pp. 878-899, 2025.
+[1] W. Wang, Y. Yang, and F. Wu, "Towards Data-And Knowledge-Driven AI: A Survey on Neuro-Symbolic Computing," *IEEE Transactions on Pattern Analysis and Machine Intelligence*, vol. 47, no. 2, pp. 878-899, 2024.
 
 [2] B. P. Bhuyan, A. Ramdane-Cherif, R. Tomar, and T. P. Singh, "Neuro-symbolic artificial intelligence: a survey," *Artificial Intelligence Review*, 2024.
 
 [3] A. Patil and A. Jadon, "Advancing Reasoning in Large Language Models: Promising Methods and Approaches," 2025.
 
-[4] M. Fang, S. Deng, Y. Zhang, Z. Shi, L. Chen, M. Pechenizkiy, and J. Wang, "Large Language Models Are Neurosymbolic Reasoners," 2024
+[4] M. Fang, S. Deng, Y. Zhang, Z. Shi, L. Chen, M. Pechenizkiy, and J. Wang, "Large Language Models Are Neurosymbolic Reasoners," 2024.
 
 [5] M. K. Sarker, L. Zhou, A. Eberhart, and P. Hitzler, "Neuro-Symbolic Artificial Intelligence: Current Trends," 2021.
 
@@ -124,22 +108,12 @@ Estas vulnerabilidades en la interfaz de traducción demuestran que, si bien la 
 
 [7] H. Kautz, "The Third AI Summer: AAAI Robert S. Engelmore Memorial Lecture," *AI Magazine*, 2022.
 
-[8] L. Serafini and A. d'Avila Garcez, "Logic Tensor Networks: Deep Learning and Logical Reasoning from Data and Knowledge," 2016
+[8] L. Serafini and A. d'Avila Garcez, "Logic Tensor Networks: Deep Learning and Logical Reasoning from Data and Knowledge," 2016.
 
 [9] R. Riegel et al., "Logical Neural Networks," 2020.
 
 [10] D. Calanzone, S. Teso, and A. Vergari, "Logically Consistent Language Models via Neuro-Symbolic Integration," 2024.
 
-[11] J. Xu, Z. Zhang, T. Friedman, Y. Liang, and G. Broeck, "A Semantic Loss Function for Deep Learning with Symbolic Knowledge," 2018.
+[11] L. Pan, A. Albalak, X. Wang, and W. Y. Wang, "LOGIC-LM: Empowering Large Language Models with Symbolic Solvers for Faithful Logical Reasoning," 2023.
 
-[12] L. Pan, A. Albalak, X. Wang, and W. Y. Wang, "LOGIC-LM: Empowering Large Language Models with Symbolic Solvers for Faithful Logical Reasoning," 2023.
-
-[13] K. Hua, Y. Gu, D. Wang, and X. Ma, "DUPLEX: Agentic Dual-System Planning via LLM-Driven Information Extraction," 2026.
-
-[14] B. Liu et al., "LLM+P: Empowering Large Language Models with Optimal Planning Proficiency," 2023.
-
-[15] S. K. Jha, R. Ewetz, and S. Neema, "Counterexample Guided Inductive Synthesis Using Large Language Models and Satisfiability Solving," 2023.
-
-[16] N. Weir, P. Clark, and B. Van Durme, "NELLIE: A Neuro-Symbolic Inference Engine for Grounded, Compositional, and Explainable Reasoning," 2024.
-
-[17] M. Besta et al., "Graph of Thoughts: Solving Elaborate Problems with Large Language Models," 2024.
+[12] B. Liu et al., "LLM+P: Empowering Large Language Models with Optimal Planning Proficiency," 2023.

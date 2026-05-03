@@ -33,13 +33,12 @@ Ejemplo abstracto:
 
 La lógica no arregla una premisa injusta. Solo la propaga de forma consistente.
 
-El merged ilustra este riesgo con un ejemplo inspirado en sesgo médico:
-Obermeyer et al. muestran que algoritmos sanitarios pueden codificar sesgos
-raciales cuando usan proxies aparentemente neutrales, como costes de salud, en
-lugar de necesidad médica real [26]. En un sistema NeSy, un componente neuronal
-podría extraer un predicado sesgado y el razonador simbólico aplicarlo con
-perfecta consistencia formal. La traza sería auditable, pero la premisa seguiría
-siendo injusta.
+Este riesgo puede ilustrarse con el sesgo algorítmico en salud: Obermeyer et al.
+muestran que algoritmos sanitarios pueden codificar sesgos raciales cuando usan
+proxies aparentemente neutrales, como costes de salud, en lugar de necesidad
+médica real [26]. En un sistema NeSy, un componente neuronal podría extraer un
+predicado sesgado y el razonador simbólico aplicarlo con perfecta consistencia
+formal. La traza sería auditable, pero la premisa seguiría siendo injusta.
 
 ## Accountability parcial
 
@@ -70,13 +69,13 @@ siempre se sabe por qué el sistema llegó a esas premisas.
 | Opacidad neuronal | Separar claramente extracción, validación e inferencia. |
 | Dominio crítico | Mantener revisión humana y trazas reproducibles. |
 
-## Qué decir en la conclusión del trabajo
+## Síntesis crítica
 
-Una conclusión fuerte no debería decir simplemente:
+Una formulación insuficiente sería:
 
 > NeSy resuelve la opacidad de los LLMs.
 
-Sería más preciso decir:
+Una formulación más precisa es:
 
 > NeSy desplaza parte de la opacidad hacia interfaces más auditables. Mejora la
 > trazabilidad del razonamiento, pero no garantiza justicia, verdad ni
@@ -95,5 +94,6 @@ Has recorrido la idea completa:
    formalización y presupuesto de cómputo.
 7. La explicabilidad simbólica no elimina sesgos ni responsabilidad humana.
 
-Para repasar visualmente, vuelve a la [Matriz funcional](../comparativas/matriz-funcional.md)
-o revisa el [Glosario](../glosario.md).
+Como cierre, la [Matriz funcional](../comparativas/matriz-funcional.md) resume
+las relaciones entre sistemas, y el [Glosario](../glosario.md) recoge los
+conceptos técnicos principales.

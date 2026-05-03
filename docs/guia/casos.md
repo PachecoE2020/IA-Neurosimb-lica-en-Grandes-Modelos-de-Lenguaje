@@ -22,7 +22,7 @@ nombres de papers, sino reconocer el patrón que cada sistema representa.
 
 ## Resultados empíricos resumidos
 
-| Sistema | Benchmark citado en el merged | Resultado principal |
+| Sistema | Benchmark citado | Resultado principal |
 |---|---|---|
 | LLM+P | IPC-7 dominios de planificación | Mejora grande sobre LLM end-to-end, con éxitos aproximados de ~80-100% según dominio [8]. |
 | Logic-LM | FOLIO / ProofWriter | GPT-4 + Logic-LM mejora frente a CoT puro, por ejemplo ~78.9% en FOLIO y ~83% en ProofWriter [9]. |
@@ -135,9 +135,11 @@ Esto lo hace más general que AlphaGeometry2, pero menos sound. Cuando la
 unificación depende de similitud semántica, entra ruido donde Prolog clásico
 tendría símbolos exactos.
 
-## Cómo compararlos oralmente
+## Comparación funcional
 
-Una forma clara de explicarlo en una presentación:
+La comparación funcional permite distinguir qué problema resuelve cada familia,
+qué papel asume el componente neuronal y qué garantía aporta el componente
+simbólico:
 
 | Pregunta | LLM+P / DUPLEX | Logic-LM / CEGIS | AlphaGeometry2 / NELLIE |
 |---|---|---|---|

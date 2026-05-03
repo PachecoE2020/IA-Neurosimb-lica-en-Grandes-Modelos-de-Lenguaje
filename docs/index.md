@@ -100,7 +100,7 @@ flowchart LR
   </article>
 </div>
 
-## Si solo tienes diez minutos
+## Ruta mínima recomendada
 
 1. Lee [Conceptos base](guia/conceptos.md).
 2. Mira la tabla de [Taxonomía](guia/taxonomia.md).
@@ -114,7 +114,7 @@ flowchart LR
 |---|---|
 | Vocabulario técnico | [Glosario](glosario.md) |
 | Papers y fuentes | [Bibliografía](bibliografia.md) |
-| Cifras del merged | [Evidencia empírica](guia/evidencia.md) |
+| Cifras y resultados clave | [Evidencia empírica](guia/evidencia.md) |
 | Diferencia LLM puro vs NeSy | [LLM vs NeSy](comparativas/llm-vs-nesy.md) |
 | Por qué falla la interfaz | [Fragilidad de traducción](analisis-critico/fragilidad-traduccion.md) |
 | Cómo clasificar AlphaGeometry2 | [Tipo 2](taxonomia/tipo-2.md) |

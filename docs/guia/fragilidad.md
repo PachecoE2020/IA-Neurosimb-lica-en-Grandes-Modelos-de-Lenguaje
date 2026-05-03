@@ -39,11 +39,12 @@ Los sistemas NeSy-LLM suelen hacer varias llamadas:
 En tareas offline, como demostrar geometría olímpica, esto es aceptable. En
 robótica reactiva o sistemas de control en tiempo real, puede ser problemático.
 
-El merged resume esta limitación con una tabla aproximada: LLM puro con CoT
-puede tardar ~1-10 s; Logic-LM con self-refinement ~10-60 s; DUPLEX ~10-90 s;
-AlphaGeometry2 puede ir de minutos a horas por problema difícil [8], [9], [14],
-[15]. Estas cifras no son universales, pero sí capturan el patrón: la
-verificación externa mejora fiabilidad a costa de llamadas, búsqueda y latencia.
+La literatura y los sistemas revisados muestran una tendencia clara: LLM puro
+con CoT puede tardar ~1-10 s; Logic-LM con self-refinement ~10-60 s; DUPLEX
+~10-90 s; AlphaGeometry2 puede ir de minutos a horas por problema difícil [8],
+[9], [14], [15]. Estas cifras no son universales, pero sí capturan el patrón:
+la verificación externa mejora fiabilidad a costa de llamadas, búsqueda y
+latencia.
 
 ### 3. Soundness frente a generalidad
 
@@ -74,7 +75,7 @@ rápida, flexible, interpretable y formalmente sound a la vez.
 !!! note "Qué sí y qué no corrigen estas mitigaciones"
     Parsers, JSON Schema y vocabularios cerrados corrigen errores sintácticos.
     No demuestran que la formalización capture la intención real del usuario.
-    Esta diferencia es una de las tesis críticas del merged.
+    Esta diferencia es una de las tesis críticas de la wiki.
 
 ## Checklist crítico
 

@@ -6,10 +6,10 @@ solver razona sobre ella y el resultado vuelve a lenguaje natural. La dificultad
 no está en llamar a un solver, sino en construir una interfaz robusta entre el
 texto y el formalismo.
 
-En el merged, este patrón corresponde principalmente al Tipo 4 de Kautz
-(`Neuro -> Symbolic`) y se ejemplifica con LLM+P [8], Logic-LM [9] y DUPLEX
-[14]. No debe confundirse con AlphaGeometry2, que es Tipo 2 porque el solver
-simbólico conserva el control de la búsqueda [15].
+Este patrón corresponde principalmente al Tipo 4 de Kautz (`Neuro -> Symbolic`)
+y se ejemplifica con LLM+P [8], Logic-LM [9] y DUPLEX [14]. No debe confundirse
+con AlphaGeometry2, que es Tipo 2 porque el solver simbólico conserva el control
+de la búsqueda [15].
 
 ## Patrón general
 
@@ -127,9 +127,9 @@ Aquí el sistema no falla de forma ruidosa. Produce una salida válida para el
 problema equivocado. Esa es la raíz de muchos riesgos discutidos en la parte
 crítica de la wiki.
 
-## Reglas de diseño para tu exposición
+## Criterios de análisis
 
-Si tienes que explicar un sistema NeSy-LLM, usa siempre esta plantilla:
+Para analizar un sistema NeSy-LLM, conviene aplicar esta plantilla:
 
 | Pregunta | Respuesta que debes buscar |
 |---|---|

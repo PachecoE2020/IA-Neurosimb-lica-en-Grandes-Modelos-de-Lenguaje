@@ -5,9 +5,9 @@ simbólico pueden acoplarse. Es útil porque evita decir simplemente "esto mezcl
 LLMs con lógica". La pregunta real es: ¿quién controla el proceso?, ¿dónde está
 el conocimiento simbólico?, ¿cuándo aparece el solver?
 
-El merged adopta Kautz [7] porque es pedagógicamente claro y se mapea bien al
-ecosistema LLM. Aun así, matiza que no es la única taxonomía posible: otros
-autores organizan NeSy por dirección del flujo o por el lugar donde vive la
+Esta wiki adopta Kautz [7] porque es pedagógicamente claro y se mapea bien al
+ecosistema LLM. Aun así, no es la única taxonomía posible: otros autores
+organizan NeSy por dirección del flujo o por el lugar donde vive la
 representación de conocimiento [5].
 
 !!! tip "Regla rápida"
@@ -30,8 +30,8 @@ representación de conocimiento [5].
     La frontera entre Tipo 5 y Tipo 6 no es completamente estable en la
     literatura. Por ejemplo, Logical Neural Networks pueden leerse como reglas
     integradas durante entrenamiento o como arquitectura con correspondencia
-    lógica interna [11]. La wiki conserva el matiz del merged: ningún LLM actual
-    demuestra razonamiento combinatorio intrínseco y escalable de Tipo 6.
+    lógica interna [11]. El matiz importante es que ningún LLM actual demuestra
+    razonamiento combinatorio intrínseco y escalable de Tipo 6.
 
 ## Árbol de decisión
 
@@ -106,8 +106,8 @@ menos demostrados con LLMs frontera.
 En particular, DeepProbLog [23] es un ejemplo canónico de Tipo 3 con inferencia
 lógico-probabilística diferenciable, pero la evidencia publicada opera con redes
 mucho más pequeñas que los LLMs frontera. Semantic Loss [13], LTNs [10] y LNNs
-[11] ilustran Tipo 5/6, pero el merged subraya que todavía no hay demostración
-end-to-end a escala LLM de miles de millones de parámetros.
+[11] ilustran Tipo 5/6, pero todavía no hay demostración end-to-end a escala
+LLM de miles de millones de parámetros.
 
 ## Mini-ejercicio
 

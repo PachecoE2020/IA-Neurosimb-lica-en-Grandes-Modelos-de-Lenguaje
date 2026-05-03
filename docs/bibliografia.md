@@ -1,9 +1,9 @@
 # Bibliografía
 
 !!! tip "Criterio de esta página"
-    Esta bibliografía reproduce la numeración global de
-    `NeSy_AI_in_LLMs_Merged.md`. Las páginas didácticas de la wiki usan estos
-    mismos números para mantener trazabilidad académica.
+    Esta bibliografía funciona como lista global de referencias de la wiki. Las
+    páginas didácticas usan estos mismos números para mantener trazabilidad
+    académica.
 
 ## Referencias
 

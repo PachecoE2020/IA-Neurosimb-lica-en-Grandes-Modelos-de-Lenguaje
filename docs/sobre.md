@@ -1,15 +1,14 @@
 # Sobre esta wiki
 
-Esta wiki reorganiza el documento `NeSy_AI_in_LLMs_Merged.md` en una estructura
-hipertextual estilo MkDocs. La organización sigue la guía de `wiki/create_wiki.md`
-y el estilo de páginas de `wiki/example.md`: TL;DR arriba, diagramas o tablas,
-cross-links y páginas autocontenidas.
+Esta wiki presenta una introducción académica y didáctica a la integración
+neurosimbólica con Grandes Modelos de Lenguaje. Está pensada como recurso
+autocontenido: combina ruta guiada, páginas de referencia, sistemas concretos,
+benchmarks, análisis crítico y bibliografía.
 
 ## Estado
 
-Esta versión es una primera wiki funcional: contiene las páginas nucleares de
-conceptos, taxonomía, sistemas, técnicas, análisis crítico, ética, comparativas,
-glosario y bibliografía.
+Esta versión contiene las páginas nucleares de conceptos, taxonomía, sistemas,
+técnicas, análisis crítico, ética, comparativas, glosario y bibliografía.
 
 ## Ver también
 

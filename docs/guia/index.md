@@ -6,9 +6,8 @@ primero el problema, después la taxonomía, luego los pipelines, después los
 sistemas concretos y finalmente las limitaciones éticas y arquitectónicas.
 
 !!! tip "Cómo leerla"
-    Si tienes poco tiempo, lee solo esta ruta guiada. Si necesitas preparar una
-    exposición o defender el trabajo, usa después las páginas de referencia para
-    profundizar en sistemas, técnicas y benchmarks concretos.
+    La ruta guiada funciona como lectura principal. Las páginas de referencia
+    amplían sistemas, técnicas, benchmarks y conceptos específicos.
 
 ## Camino principal
 
@@ -31,7 +30,7 @@ sistemas concretos y finalmente las limitaciones éticas y arquitectónicas.
   </a>
   <a class="path-step" href="evidencia/">
     <strong>5. Evidencia empírica</strong>
-    <span>Cifras, benchmarks, latencias y claims verificables del merged.</span>
+    <span>Cifras, benchmarks, latencias y afirmaciones verificables.</span>
   </a>
   <a class="path-step" href="fragilidad/">
     <strong>6. Fragilidad</strong>
@@ -58,26 +57,26 @@ flowchart TD
     H --> I["Riesgos éticos y accountability"]
 ```
 
-## Qué deberías poder explicar al final
+## Resultados de aprendizaje
 
-Después de leer la ruta, deberías poder responder con seguridad:
+Después de leer la ruta, el lector debería poder:
 
-1. Por qué un LLM con *chain-of-thought* no equivale a un razonador formal.
-2. Qué significa que AlphaGeometry2 sea Tipo 2 `Symbolic[Neuro]`.
-3. Por qué LLM+P, DUPLEX y Logic-LM son principalmente pipelines Tipo 4.
-4. Qué evidencia empírica apoya la mejora de pipelines como LLM+P o Logic-LM.
-5. Dónde aparece el error más peligroso: no en el solver, sino en la traducción.
-6. Por qué una prueba simbólica puede ser válida y aun así partir de premisas malas.
+1. Distinguir un LLM con *chain-of-thought* de un razonador formal.
+2. Explicar por qué AlphaGeometry2 es Tipo 2 `Symbolic[Neuro]`.
+3. Identificar LLM+P, DUPLEX y Logic-LM como pipelines principalmente Tipo 4.
+4. Relacionar los sistemas NeSy-LLM con sus resultados empíricos.
+5. Localizar la fragilidad principal en la interfaz de traducción.
+6. Reconocer que una prueba simbólica puede ser válida y aun así partir de premisas defectuosas.
 
-## Modo de uso según objetivo
+## Recorridos de lectura
 
-| Objetivo | Ruta recomendada |
+| Recorrido | Páginas recomendadas |
 |---|---|
-| Entender la idea para clase | Lee los capítulos 1, 2 y 3. |
-| Preparar exposición oral | Lee toda la ruta y revisa [Evidencia empírica](evidencia.md). |
-| Defender AlphaGeometry2 | Lee capítulos 2, 4 y la ficha [AlphaGeometry2](../sistemas/alphageometry2.md). |
-| Criticar la arquitectura | Lee capítulos 5, 6 y 7, más [Fragilidad de traducción](../analisis-critico/fragilidad-traduccion.md). |
-| Revisar bibliografía | Ve a [Bibliografía](../bibliografia.md). |
+| Lectura conceptual | Capítulos 1, 2 y 3. |
+| Lectura completa | Toda la ruta guiada y [Evidencia empírica](evidencia.md). |
+| AlphaGeometry2 | Capítulos 2, 4 y ficha [AlphaGeometry2](../sistemas/alphageometry2.md). |
+| Análisis crítico | Capítulos 5, 6 y 7, más [Fragilidad de traducción](../analisis-critico/fragilidad-traduccion.md). |
+| Fuentes académicas | [Bibliografía](../bibliografia.md). |
 
 ## Siguiente paso
 

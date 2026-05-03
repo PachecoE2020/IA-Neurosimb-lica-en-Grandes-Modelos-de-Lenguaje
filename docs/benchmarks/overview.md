@@ -14,7 +14,7 @@
 | [IMO Geometry](imo-geometry.md) | Pruebas geométricas olímpicas | AlphaGeometry2 |
 | EntailmentBank | Árboles de explicación científica | NELLIE |
 
-## Resultados usados en el merged
+## Resultados usados en la wiki
 
 | Benchmark | Resultado citado | Lectura correcta |
 |---|---|---|

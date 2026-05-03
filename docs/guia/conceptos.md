@@ -5,10 +5,10 @@ flexibles, pero no verificables; los sistemas simbólicos son verificables, pero
 son rígidos. La pregunta central no es cuál de los dos paradigmas gana, sino
 cómo repartir el trabajo para que el sistema completo sea más fiable.
 
-Esta formulación sigue el marco del documento merged y se apoya en los surveys
-de Wang et al. [1], Bhuyan et al. [2] y Sarker et al. [5]. La metáfora
-Sistema 1/Sistema 2 se toma de Kahneman [6], pero se usa aquí como analogía de
-diseño, no como afirmación cognitiva fuerte sobre los LLMs.
+Esta formulación se apoya en los surveys de Wang et al. [1], Bhuyan et al. [2]
+y Sarker et al. [5]. La metáfora Sistema 1/Sistema 2 se toma de Kahneman [6],
+pero se usa aquí como analogía de diseño, no como afirmación cognitiva fuerte
+sobre los LLMs.
 
 !!! info "Idea clave"
     En una arquitectura NeSy-LLM bien diseñada, el componente neuronal no debe
@@ -98,8 +98,8 @@ mecanismo externo que puede comprobar la inferencia.
 
 ## Evidencia mínima
 
-El merged no defiende NeSy solo como intuición filosófica. Lo conecta con
-resultados empíricos:
+La motivación de NeSy no es solo filosófica. También se apoya en resultados
+empíricos:
 
 | Fenómeno | Evidencia resumida |
 |---|---|

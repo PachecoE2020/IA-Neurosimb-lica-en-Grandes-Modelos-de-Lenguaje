@@ -24,7 +24,7 @@ exige construcciones auxiliares y cierre deductivo.
 
 IMO Geometry no mide conversación ni plausibilidad textual. Mide la capacidad de
 producir una prueba geométrica verificable. Por eso es un benchmark especialmente
-adecuado para defender la tesis neurosimbólica: el modelo neuronal propone
+adecuado para sostener la tesis neurosimbólica: el modelo neuronal propone
 construcciones auxiliares, pero la validez final depende del motor deductivo
 DDAR [15], [21].
 

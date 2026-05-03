@@ -423,10 +423,19 @@ En dominios como geometría olímpica o razonamiento composicional sobre lenguaj
 científico, no basta con producir una respuesta final: el sistema debe generar
 una **prueba** —una cadena de inferencias formalmente auditable.
 
-Las dos arquitecturas anteriores delegan **toda** la búsqueda al solver. Esta
-tercera categoría hace lo opuesto: el solver opera, pero el LLM **guía la
-búsqueda** actuando como heurística generativa. El paralelo conceptual es
-AlphaZero (red de políticas + MCTS), trasladado al dominio simbólico.
+Las dos familias anteriores usan el LLM principalmente como **formalizador**:
+convierte lenguaje natural en PDDL, FOL, SMT o código, y después un solver
+externo realiza la inferencia. En esta tercera familia el patrón cambia: el
+sistema simbólico conserva el control de la búsqueda, pero un componente
+neuronal propone ramas, reglas o construcciones auxiliares cuando la deducción
+se bloquea.
+
+En términos de la taxonomía de Kautz, AlphaGeometry2 no debe entenderse como un
+pipeline `Neuro -> Symbolic`, sino como un caso cercano al **Tipo 2
+(`Symbolic[Neuro]`)**: el motor simbólico gobierna el proceso y llama al modelo
+neuronal como subrutina heurística. El paralelo conceptual es AlphaGo/AlphaZero
+(MCTS + red neuronal), trasladado del juego al dominio de la demostración
+geométrica.
 
 ```mermaid
 flowchart TD
@@ -439,11 +448,13 @@ flowchart TD
     G --> C
 ```
 
-### 3.3.2. AlphaGeometry2 [4], [15]: heurística neuronal sobre cierre deductivo
+### 3.3.2. AlphaGeometry2 [4], [15]: Tipo 2 `Symbolic[Neuro]`
 
 AlphaGeometry y su sucesor AlphaGeometry2 alcanzaron rendimiento de medalla de
-oro en geometría olímpica. Su arquitectura es paradigmática del patrón "LM como
-heurística".
+oro en geometría olímpica. Su arquitectura es paradigmática del patrón
+**solver simbólico + modelo neuronal como heurística**. La prueba no la produce
+el modelo neuronal: la produce y valida el motor deductivo. El modelo solo
+sugiere construcciones auxiliares que amplían el espacio de búsqueda.
 
 **Componentes:**
 
@@ -454,10 +465,12 @@ heurística".
   fragmento, pero **insuficiente** para problemas no triviales: muchas pruebas
   olímpicas requieren **construcciones auxiliares** —puntos, líneas o círculos
   no presentes en el enunciado.
-- **LLM heurístico.** En el sistema original [15], un transformer entrenado
-  desde cero sobre una base masiva de teoremas sintéticos generados por el
-  propio DDAR. Su función: proponer construcciones auxiliares plausibles.
-  AlphaGeometry2 [4] sustituye el transformer por un Gemini *fine-tuneado*.
+- **Modelo de lenguaje heurístico.** En el sistema original [15], se usa un
+  transformer entrenado desde cero sobre una base masiva de teoremas sintéticos
+  generados por el propio DDAR. No es un LLM conversacional generalista, sino
+  un modelo especializado para proponer construcciones auxiliares plausibles.
+  AlphaGeometry2 [4] sustituye ese transformer por un Gemini *fine-tuneado* y
+  mejora la coordinación entre árboles de búsqueda.
 
 **Pipeline algorítmico:**
 
@@ -467,7 +480,7 @@ flowchart TB
     B --> C[DDAR:<br/>cierre deductivo]
     C --> D{¿La meta está<br/>en el cierre?}
     D -- sí --> E[Prueba encontrada<br/>traza completa]
-    D -- no --> F[LLM:<br/>proponer construcción<br/>auxiliar A_i]
+    D -- no --> F[Modelo neuronal:<br/>proponer construcción<br/>auxiliar A_i]
     F --> G[Añadir A_i a<br/>las premisas]
     G --> C
 ```
@@ -478,18 +491,19 @@ flowchart TB
    DDAR (determinista, sin LLM).
 2. **Cierre deductivo inicial.** DDAR aplica todas las reglas hasta saturación.
    Si la meta aparece en el cierre, la prueba termina.
-3. **Proposición heurística.** Si no, el LLM examina el estado actual y propone
-   una construcción auxiliar (p. ej., "sea M el punto medio de AB").
+3. **Proposición heurística.** Si no, el modelo neuronal examina el estado
+   actual y propone una construcción auxiliar (p. ej., "sea M el punto medio de
+   AB").
 4. **Iteración.** La construcción se añade a las premisas y DDAR se re-ejecuta.
    El bucle continúa hasta encontrar la prueba o agotar un presupuesto de
    construcciones.
 
-**El patrón arquitectónico clave.** El LLM **nunca afirma** que la prueba es
-válida; esa responsabilidad recae 100 % en DDAR. El LLM es estrictamente un
-**proponente de ramificaciones** en un árbol de búsqueda cuyas hojas son
-verificadas por el motor simbólico. Esta separación —**generación neuronal,
-verificación simbólica**— es el patrón que mejor encarna los ideales del
-paradigma NeSy.
+**El patrón arquitectónico clave.** El modelo neuronal **nunca afirma** que la
+prueba es válida; esa responsabilidad recae 100 % en DDAR. El componente
+neuronal es estrictamente un **proponente de ramificaciones** en un árbol de
+búsqueda cuyas hojas son verificadas por el motor simbólico. Esta separación
+—**generación neuronal, verificación simbólica**— es precisamente lo que ubica
+a AlphaGeometry2 en el Tipo 2 de Kautz: `Symbolic[Neuro]`.
 
 AlphaGeometry2 mejora sobre [15] con: (i) un lenguaje de dominio extendido que
 cubre objetos en movimiento, ecuaciones lineales de ángulos, razones y
@@ -543,7 +557,11 @@ dominios de alto riesgo (medicina, derecho).
 
 AlphaGeometry2 y NELLIE representan una integración más profunda que los
 pipelines de traducción simple: el componente neuronal participa activamente en
-la exploración del espacio de soluciones.
+la exploración del espacio de soluciones. En AlphaGeometry2 esta integración es
+taxonómicamente limpia: el sistema simbólico manda y la red funciona como
+subrutina heurística, por lo que encaja en `Symbolic[Neuro]`. En NELLIE el
+encaje es menos rígido, porque la búsqueda tipo Prolog depende de recuperación,
+generación y unificación semántica sobre lenguaje natural.
 
 El riesgo principal es el **coste de búsqueda**. En dominios complejos, el
 número de posibles ramas, submetas o construcciones auxiliares crece de manera
@@ -561,35 +579,35 @@ Prolog clásico no tendría.
 
 ## 3.4. Síntesis comparativa
 
-Las seis arquitecturas analizadas pueden organizarse en una matriz que cruza
-**rol del LLM** (formalizador vs. heurística) con el **régimen de control
+Los sistemas analizados pueden organizarse en una matriz que cruza el **rol del
+componente neuronal** (formalizador vs. heurística) con el **régimen de control
 simbólico** (búsqueda determinista sobre representación formalizada vs.
 búsqueda guiada por heurística aprendida). La matriz es una clasificación
-**interpretativa**, no una taxonomía formal: no todos los sistemas implementan
-literalmente *forward* o *backward chaining*.
+**funcional**, no una sustitución de la taxonomía de Kautz: AlphaGeometry2, por
+ejemplo, aparece aquí en la celda de "heurística", pero taxonómicamente
+corresponde al Tipo 2 (`Symbolic[Neuro]`).
 
 | | **Búsqueda determinista sobre representación formalizada** | **Búsqueda guiada por heurística aprendida** |
 |---|---|---|
-| **LLM como formalizador** | LLM+P, DUPLEX (NL → PDDL → planificador A\*) <br> Logic-LM, CEGIS (NL → FOL/SMT → solver) | — |
-| **LLM como heurística** | — | AlphaGeometry2 (DDAR + construcciones auxiliares) <br> NELLIE (Prolog-style + retrieval semántico) |
+| **LLM como formalizador** | LLM+P, DUPLEX (NL → PDDL → planificador A\*) <br> Logic-LM (NL → FOL/SMT → solver) | CEGIS (candidatos generados + verificación SMT) |
+| **Modelo neuronal como heurística** | — | AlphaGeometry2 (DDAR + construcciones auxiliares) <br> NELLIE (Prolog-style + retrieval semántico) |
 
 La matriz pone de manifiesto un patrón: cuando el LLM solo formaliza, el
 componente simbólico realiza una **búsqueda determinista clásica** (heurísticas
 admisibles en planificación, DPLL/CDCL en SAT/SMT) sobre una representación
-fija. Cuando el LLM actúa como heurística generativa, la búsqueda se vuelve
-**iterativa y dirigida por proposiciones del modelo neuronal**, evaluadas por
-el motor simbólico. Las dos celdas vacías de la matriz —*formalizador con
-búsqueda heurística aprendida* y *heurística con búsqueda determinista
-clásica*— corresponden a combinaciones poco exploradas en la literatura
-revisada.
+fija. Cuando el componente neuronal actúa como heurística generativa, la
+búsqueda se vuelve **iterativa y dirigida por proposiciones del modelo
+neuronal**, evaluadas por el motor simbólico. La celda vacía restante
+—*heurística con búsqueda determinista clásica*— corresponde a una combinación
+poco explorada en la literatura revisada.
 
 Vista lado a lado, la comparativa funcional de las tres familias queda:
 
-| Familia | Ejemplos | Rol del LLM | Rol simbólico | Fortaleza | Fragilidad principal |
+| Familia | Ejemplos | Rol del componente neuronal | Rol simbólico | Fortaleza | Fragilidad principal |
 |---|---|---|---|---|---|
 | Planificación | LLM+P, DUPLEX | Extraer e (idealmente) estructurar bajo schema. | Generar planes verificables. | Planes ejecutables y validados. | Mala traducción de objetos, acciones o metas. |
 | Lógica formal | Logic-LM, CEGIS | Formular y reparar usando feedback del solver. | Validar fórmulas, dar contraejemplos. | Corrección lógica fuerte. | Error de formalización inicial; oscilación en refinamiento. |
-| Búsqueda de pruebas | AlphaGeometry2, NELLIE | Proponer ramas, hipótesis o construcciones. | Deducir, verificar y cerrar pruebas. | Explicabilidad y trazabilidad. | Explosión combinatoria del espacio. |
+| Búsqueda de pruebas | AlphaGeometry2, NELLIE | Proponer ramas, hipótesis o construcciones. | Deducir, verificar y cerrar pruebas. | Explicabilidad y trazabilidad. | Explosión combinatoria del espacio; en AlphaGeometry2, dependencia de que las construcciones propuestas estén dentro del lenguaje geométrico admitido. |
 
 ---
 
@@ -599,7 +617,7 @@ Aunque los casos de uso difieren, todos siguen el mismo invariante:
 
 ```mermaid
 flowchart TD
-    A[Lenguaje natural o problema informal] --> B[LLM]
+    A[Lenguaje natural o problema informal] --> B[LLM o modelo neuronal]
     B --> C[Representación intermedia]
     C --> D[Sistema simbólico]
     D --> E[Resultado formal]
@@ -611,8 +629,8 @@ flowchart TD
 
 El invariante puede formularse así:
 
-> **El LLM interpreta, traduce o propone; el sistema simbólico verifica,
-> planifica o deduce.**
+> **El componente neuronal interpreta, traduce o propone; el sistema simbólico
+> verifica, planifica o deduce.**
 
 La promesa de la IA neurosimbólica en LLMs no consiste en hacer que el modelo
 neuronal sea perfecto; consiste en diseñar una arquitectura donde sus errores
@@ -624,9 +642,10 @@ externos.
 ## 3.6. Conclusión y transición a la Sección 4
 
 Los casos revisados muestran que la integración NeSy-LLM es más útil cuando
-existe una separación clara de responsabilidades: el LLM aporta flexibilidad
-semántica, adaptación al lenguaje natural y capacidad heurística; el componente
-simbólico aporta verificación, estructura, trazabilidad y consistencia lógica.
+existe una separación clara de responsabilidades: el componente neuronal aporta
+flexibilidad semántica, adaptación al lenguaje natural o capacidad heurística;
+el componente simbólico aporta verificación, estructura, trazabilidad y
+consistencia lógica.
 
 Tres observaciones cierran la sección y abren la crítica que se desarrollará en
 la Sección 4:
@@ -636,11 +655,12 @@ la Sección 4:
    completo; en CEGIS, cada candidato se verifica con Z3; en LLM+P, el
    planificador se ejecuta una vez pero con coste exponencial en el peor caso.
    La latencia acumulada limita la aplicación en tiempo real (Sección 4.1).
-2. **La interfaz NL → formal es el eslabón débil universal.** En LLM+P, una
-   alucinación en `(:init ...)` invalida el plan; en Logic-LM, una
-   cuantificación errónea cambia el resultado deductivo; en AlphaGeometry2 una
-   construcción mal nombrada rompe la unificación con DDAR. Esta fragilidad de
-   traducción se examina en 4.2.
+2. **La interfaz entre lo neuronal y lo simbólico es el eslabón débil
+   universal.** En LLM+P, una alucinación en `(:init ...)` invalida el plan; en
+   Logic-LM, una cuantificación errónea cambia el resultado deductivo; en
+   AlphaGeometry2, una construcción auxiliar mal formada o fuera del lenguaje
+   geométrico admitido no amplía correctamente el cierre deductivo de DDAR. Esta
+   fragilidad de traducción/interfaz se examina en 4.2.
 3. **La soundness se compra con generalidad.** Cuanto más estricto es el
    componente simbólico (Z3 > Fast Downward > DDAR > NLI semántico de NELLIE),
    más estrecho es el dominio cubierto. NELLIE es el más general y el menos

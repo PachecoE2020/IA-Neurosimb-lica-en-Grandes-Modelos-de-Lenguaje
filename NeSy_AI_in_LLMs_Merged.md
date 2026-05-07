@@ -574,7 +574,7 @@ Mientras el componente neuronal siga siendo propenso a alucinaciones estructural
 
 ---
 
-## 5. Cuestiones Éticas, Sesgos y Retos Futuros
+## 5. Cuestiones Éticas y Sesgos 
 
 La integración NeSy responde no solo a una búsqueda de rendimiento sino a una necesidad de transparencia y responsabilidad frente a las limitaciones éticas de los modelos puramente estadísticos. Sin embargo, no elimina los problemas éticos: los redistribuye y, en ciertos casos, los complejiza.
 
